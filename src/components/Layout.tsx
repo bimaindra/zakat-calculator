@@ -8,9 +8,10 @@ type LayoutProps = {
 export default function Layout({ children }: LayoutProps) {
 	return (
 		<Container
-			as="main"
-			minH="100vh"
-			maxW="container.lg"
+			as={`main`}
+			minH={`100vh`}
+			maxW={`container.lg`}
+			position={`relative`}
 			pt={`40px`}
 			pb={`40px`}>
 			{children}
