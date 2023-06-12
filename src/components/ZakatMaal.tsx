@@ -1,7 +1,12 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
 import {
+	Accordion,
+	AccordionItem,
+	AccordionPanel,
+	AccordionButton,
+	AccordionIcon,
 	Box,
+	Heading,
 	Text,
 	Stack,
 	Flex,
@@ -14,31 +19,35 @@ import {
 import { useState } from 'react';
 import CurrencyInput from 'react-currency-input-field';
 import { emptyValue, getNishabYearly } from './../libs/constants';
+import { ZakatTypes } from '../types';
 
-type ZakatMaalProps = {
-	onHandleCalculate: any;
+const initialInput = {
+	emas: {
+		value: '',
+		isError: false,
+	},
+	tabungan: {
+		value: '',
+		isError: false,
+	},
+	asset: {
+		value: '',
+		isError: false,
+	},
+	hutang: {
+		value: '',
+		isError: false,
+	},
 };
 
-const ZakatMaal = ({ onHandleCalculate }: ZakatMaalProps) => {
-	const initialInput = {
-		emas: {
-			value: '',
-			isError: false,
-		},
-		tabungan: {
-			value: '',
-			isError: false,
-		},
-		asset: {
-			value: '',
-			isError: false,
-		},
-		hutang: {
-			value: '',
-			isError: false,
-		},
-	};
+const ZakatMaal = ({ id, currentActive, onHandleCalculate }: ZakatTypes) => {
 	const [input, setInput] = useState(initialInput);
+
+	useEffect(() => {
+		if (currentActive !== id) {
+			setInput(initialInput);
+		}
+	}, [currentActive]);
 
 	const handleCalculate = () => {
 		const totalTreasure =
@@ -90,36 +99,59 @@ const ZakatMaal = ({ onHandleCalculate }: ZakatMaalProps) => {
 
 	return (
 		<>
-			<Box
-				mb={6}
-				lineHeight={`tall`}>
-				<Text mb={`4`}>
-					<b>
-						<em>Zakat Maal</em>
-					</b>{' '}
-					yang dimaksud dalam perhitungan ini adalah zakat yang dikenakan atas
-					uang, emas, surat berharga, dan aset yang disewakan. Tidak termasuk
-					harta pertanian, pertambangan, dan lain-lain yang diatur dalam UU
-					No.23/2011 tentang pengelolaan zakat.
-				</Text>
-				<Text mb={`4`}>
-					Zakat maal harus sudah mencapai nishab (batas minimum) dan terbebas
-					dari hutang serta kepemilikan telah mencapai 1 tahun (haul). Nishab
-					zakat maal sebesar 85 gram emas. Kadar zakatnya senilai 2,5%.
-				</Text>
-				<Text mb={`4`}>
-					Standar harga emas yg digunakan untuk 1 gram nya adalah Rp
-					1.089.000,-. Sementara nishab yang digunakan adalah sebesar 85 gram
-					emas.
-				</Text>
-				<Text>
-					<em>
-						(Sumber: Al Qur'an Surah Al Baqarah ayat 267, Peraturan Menteri
-						Agama Nomer 31 Tahun 2019, Fatwa MUI Nomer 3 Tahun 2003, dan
-						pendapat Shaikh Yusuf Qardawi).
-					</em>
-				</Text>
-			</Box>
+			<Accordion
+				allowToggle
+				mb={6}>
+				<AccordionItem border={`none`}>
+					<Heading as={'h3'}>
+						<AccordionButton
+							px={0}
+							py={2}
+							mb={2}>
+							<Box
+								as="span"
+								flex="1"
+								textAlign="left"
+								fontWeight={`bold`}
+								fontSize={`lg`}>
+								Informasi Selengkapnya...
+							</Box>
+							<AccordionIcon />
+						</AccordionButton>
+					</Heading>
+					<AccordionPanel>
+						<Box lineHeight={`tall`}>
+							<Text mb={`4`}>
+								<b>
+									<em>Zakat Maal</em>
+								</b>{' '}
+								yang dimaksud dalam perhitungan ini adalah zakat yang dikenakan
+								atas uang, emas, surat berharga, dan aset yang disewakan. Tidak
+								termasuk harta pertanian, pertambangan, dan lain-lain yang
+								diatur dalam UU No.23/2011 tentang pengelolaan zakat.
+							</Text>
+							<Text mb={`4`}>
+								Zakat maal harus sudah mencapai nishab (batas minimum) dan
+								terbebas dari hutang serta kepemilikan telah mencapai 1 tahun
+								(haul). Nishab zakat maal sebesar 85 gram emas. Kadar zakatnya
+								senilai 2,5%.
+							</Text>
+							<Text mb={`4`}>
+								Standar harga emas yg digunakan untuk 1 gram nya adalah Rp
+								1.089.000,-. Sementara nishab yang digunakan adalah sebesar 85
+								gram emas.
+							</Text>
+							<Text>
+								<em>
+									(Sumber: Al Qur'an Surah Al Baqarah ayat 267, Peraturan
+									Menteri Agama Nomer 31 Tahun 2019, Fatwa MUI Nomer 3 Tahun
+									2003, dan pendapat Shaikh Yusuf Qardawi).
+								</em>
+							</Text>
+						</Box>
+					</AccordionPanel>
+				</AccordionItem>
+			</Accordion>
 			<Stack spacing={4}>
 				<FormControl
 					isRequired

@@ -33,6 +33,7 @@ const initialResult = {
 
 export default function App() {
 	const [result, setResult] = useState(initialResult);
+	const [currentTabsIndex, setCurrentTabsIndex] = useState(0);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const toast = useToast();
 
@@ -67,25 +68,45 @@ export default function App() {
 					textAlign={`center`}>
 					<Heading
 						as={`h1`}
-						size={`xl`}>
-						Hitung Zakatmu...
+						size={`xl`}
+						mb={4}>
+						Yuk, Hitung Zakatmu...
 					</Heading>
+					<Text>
+						Tunaikan zakat sebagai bentuk syukur atas rezeki yang telah
+						diberikan, dan untuk membantu meringankan beban sesama.
+					</Text>
+					<Text>
+						Bersyukur dengan memberi dan rasakan berkah yang melimpah.
+					</Text>
 				</Box>
 				<Box
 					pt={`10`}
 					mx={`auto`}
 					maxW={`container.sm`}>
-					<Tabs>
+					<Tabs
+						defaultIndex={currentTabsIndex}
+						onChange={(index) => {
+							setCurrentTabsIndex(index);
+						}}>
 						<TabList>
 							<Tab>Zakat Profesi</Tab>
 							<Tab>Zakat Maal</Tab>
 						</TabList>
 						<TabPanels>
 							<TabPanel>
-								<ZakatProfesi onHandleCalculate={handleResult} />
+								<ZakatProfesi
+									id={0}
+									currentActive={currentTabsIndex}
+									onHandleCalculate={handleResult}
+								/>
 							</TabPanel>
 							<TabPanel>
-								<ZakatMaal onHandleCalculate={handleResult} />
+								<ZakatMaal
+									id={1}
+									currentActive={currentTabsIndex}
+									onHandleCalculate={handleResult}
+								/>
 							</TabPanel>
 						</TabPanels>
 					</Tabs>

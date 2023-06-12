@@ -6,15 +6,16 @@ export default function Footer() {
 			as={`footer`}
 			p={`4`}
 			borderTop={`1px`}
-			borderColor={`InactiveBorder`}>
+			borderColor={`gray.200`}>
 			<Container
 				display={`flex`}
-				justifyContent={`flex-end`}
+				justifyContent={`center`}
 				maxW="container.lg">
 				<Text
 					fontSize={`sm`}
-					fontWeight={`bold`}>
-					&copy; 2023
+					fontWeight={`normal`}
+					textColor={`gray.600`}>
+					&copy; 2023 | by Bima Indra Mulya
 				</Text>
 			</Container>
 		</Box>

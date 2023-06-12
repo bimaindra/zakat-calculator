@@ -1,11 +1,7 @@
-import React from 'react';
 import { Container } from '@chakra-ui/react';
+import { ChildrenProps } from '../types';
 
-type LayoutProps = {
-	children: React.ReactNode;
-};
-
-export default function Layout({ children }: LayoutProps) {
+export default function Layout({ children }: ChildrenProps) {
 	return (
 		<Container
 			as={`main`}
