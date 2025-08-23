@@ -1,6 +1,6 @@
+import React from 'react';
 import {
 	Box,
-	Button,
 	Heading,
 	Tabs,
 	TabList,
@@ -8,169 +8,109 @@ import {
 	TabPanels,
 	TabPanel,
 	Text,
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalFooter,
-	ModalBody,
-	ModalCloseButton,
-	useDisclosure,
-	useToast,
-	Divider,
+	VisuallyHidden,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import Layout from './components/Layout';
-import ZakatMaal from './components/ZakatMaal';
-import ZakatProfesi from './components/ZakatProfesi';
-
-const initialResult = {
-	isEligible: false,
-	value: 0,
-};
+import Footer from './components/footer';
+import Header from './components/header';
+import Layout from './components/layout';
+import ZakatMaal from './components/zakat-maal';
+import ZakatProfesi from './components/zakat-profesi';
+import ResultModal from './components/result-modal';
+import SkipLink from './components/skip-link';
+import { useZakatTabs, useZakatModal } from './hooks/use-zakat-state';
 
 export default function App() {
-	const [result, setResult] = useState(initialResult);
-	const [currentTabsIndex, setCurrentTabsIndex] = useState(0);
-	const { isOpen, onOpen, onClose } = useDisclosure();
-	const toast = useToast();
-
-	const handleResult = (result: any) => {
-		if (result) {
-			// set result
-			setResult(result);
-
-			// show toast
-			toast({
-				title: 'Mohon tunggu.',
-				description: 'Sedang mengkalkulasi...',
-				status: 'info',
-				duration: 1750,
-				isClosable: true,
-			});
-
-			// open modal
-			setTimeout(() => {
-				onOpen();
-			}, 2000);
-		}
-	};
+	const { currentTab, handleTabChange } = useZakatTabs();
+	const modalProps = useZakatModal();
 
 	return (
 		<>
+			<SkipLink />
 			<Header />
 			<Layout>
-				<Box
-					maxW={`container.sm`}
-					mx={`auto`}
-					textAlign={`center`}>
-					<Heading
-						as={`h1`}
-						size={`xl`}
-						mb={4}>
-						Yuk, Hitung Zakatmu...
-					</Heading>
-					<Text>
-						Tunaikan zakat sebagai bentuk syukur atas rezeki yang telah
-						diberikan, dan untuk membantu meringankan beban sesama.
-					</Text>
-					<Text>
-						Bersyukur dengan memberi dan rasakan berkah yang melimpah.
-					</Text>
-				</Box>
-				<Box
-					pt={`10`}
-					mx={`auto`}
-					maxW={`container.sm`}>
-					<Tabs
-						defaultIndex={currentTabsIndex}
-						onChange={(index) => {
-							setCurrentTabsIndex(index);
-						}}>
-						<TabList>
-							<Tab>Zakat Profesi</Tab>
-							<Tab>Zakat Maal</Tab>
-						</TabList>
-						<TabPanels>
-							<TabPanel>
-								<ZakatProfesi
-									id={0}
-									currentActive={currentTabsIndex}
-									onHandleCalculate={handleResult}
-								/>
-							</TabPanel>
-							<TabPanel>
-								<ZakatMaal
-									id={1}
-									currentActive={currentTabsIndex}
-									onHandleCalculate={handleResult}
-								/>
-							</TabPanel>
-						</TabPanels>
-					</Tabs>
-				</Box>
+				<main 
+					id="main-content" 
+					tabIndex={-1}
+					role="main"
+					aria-label="Kalkulator Zakat">
+					<Box
+						maxW="container.sm"
+						mx="auto"
+						textAlign="center">
+						<Heading
+							as="h1"
+							size="xl"
+							mb={4}
+							id="page-title">
+							Yuk, Hitung Zakatmu...
+						</Heading>
+						<Text mb={2}>
+							Tunaikan zakat sebagai bentuk syukur atas rezeki yang telah
+							diberikan, dan untuk membantu meringankan beban sesama.
+						</Text>
+						<Text>
+							Bersyukur dengan memberi dan rasakan berkah yang melimpah.
+						</Text>
+						<VisuallyHidden>
+							<p>
+								Aplikasi ini membantu Anda menghitung zakat profesi dan zakat maal 
+								berdasarkan nilai nisab terkini. Silakan pilih jenis zakat yang ingin dihitung 
+								menggunakan tab di bawah ini.
+							</p>
+						</VisuallyHidden>
+					</Box>
+					<Box
+						pt={10}
+						mx="auto"
+						maxW="container.sm">
+						<Tabs
+							index={currentTab}
+							onChange={handleTabChange}
+							isLazy
+							aria-label="Pilih jenis zakat">
+							<TabList 
+								role="tablist"
+								aria-label="Jenis zakat">
+								<Tab
+									role="tab"
+									aria-controls="zakat-profesi-panel"
+									id="zakat-profesi-tab"
+									aria-selected={currentTab === 0}
+									data-testid="tab-profesi">
+									Zakat Profesi
+								</Tab>
+								<Tab
+									role="tab"
+									aria-controls="zakat-maal-panel"
+									id="zakat-maal-tab"
+									aria-selected={currentTab === 1}
+									data-testid="tab-maal">
+									Zakat Maal
+								</Tab>
+							</TabList>
+							<TabPanels>
+								<TabPanel
+									role="tabpanel"
+									id="zakat-profesi-panel"
+									aria-labelledby="zakat-profesi-tab"
+									tabIndex={0}>
+									<ZakatProfesi />
+								</TabPanel>
+								<TabPanel
+									role="tabpanel"
+									id="zakat-maal-panel"
+									aria-labelledby="zakat-maal-tab"
+									tabIndex={0}>
+									<ZakatMaal />
+								</TabPanel>
+							</TabPanels>
+						</Tabs>
+					</Box>
+				</main>
 			</Layout>
 			<Footer />
 
-			{/*Modal Result*/}
-			<Modal
-				closeOnOverlayClick={false}
-				isOpen={isOpen}
-				onClose={onClose}
-				size={`lg`}
-				isCentered>
-				<ModalOverlay />
-				<ModalContent>
-					<ModalHeader></ModalHeader>
-					<ModalCloseButton />
-					<ModalBody
-						textAlign={'center'}
-						py={`4`}>
-						<Heading
-							as={`h5`}
-							size={`lg`}
-							lineHeight={`base`}>
-							{result.isEligible ? (
-								<>
-									Anda wajib menunaikan <br />
-									Zakat.
-								</>
-							) : (
-								<>
-									Anda tidak wajib menunaikan <br /> Zakat.
-								</>
-							)}
-						</Heading>
-						{result.value !== 0 && (
-							<>
-								<Divider
-									my={4}
-									variant={`dashed`}
-								/>
-								<Text
-									fontWeight={`bold`}
-									fontSize={`2xl`}
-									lineHeight={`base`}>
-									Sebesar <br /> Rp
-									{new Intl.NumberFormat('de-DE', {
-										maximumSignificantDigits: 4,
-									}).format(result.value)}
-									,-
-								</Text>
-							</>
-						)}
-					</ModalBody>
-					<ModalFooter>
-						<Button
-							mr={3}
-							onClick={onClose}>
-							Tutup
-						</Button>
-					</ModalFooter>
-				</ModalContent>
-			</Modal>
+			<ResultModal {...modalProps} />
 		</>
 	);
 }

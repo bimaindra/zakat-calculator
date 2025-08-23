@@ -1,6 +1,6 @@
 import { Box, Container, Text } from '@chakra-ui/react';
 
-export default function Header() {
+const Header = () => {
 	return (
 		<Box
 			as={`header`}
@@ -22,4 +22,6 @@ export default function Header() {
 			</Container>
 		</Box>
 	);
-}
+};
+
+export default Header;

@@ -1,6 +1,7 @@
 import { Box, Container, Text } from '@chakra-ui/react';
 
-export default function Footer() {
+const Footer = () => {
+	const getYear = new Date().getFullYear();
 	return (
 		<Box
 			as={`footer`}
@@ -15,9 +16,11 @@ export default function Footer() {
 					fontSize={`sm`}
 					fontWeight={`normal`}
 					textColor={`gray.600`}>
-					&copy; 2023 | by Bima Indra Mulya
+					&copy; {getYear} | by Bima Indra Mulya
 				</Text>
 			</Container>
 		</Box>
 	);
-}
+};
+
+export default Footer;
