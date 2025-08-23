@@ -1,5 +1,5 @@
 import { Container } from '@chakra-ui/react';
-import { ChildrenProps } from '../types';
+import { type ChildrenProps } from '../types';
 
 export default function Layout({ children }: ChildrenProps) {
 	return (

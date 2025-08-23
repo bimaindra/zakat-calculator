@@ -19,7 +19,7 @@ import {
 import { useState } from 'react';
 import CurrencyInput from 'react-currency-input-field';
 import { emptyValue, getNishabMonthy } from './../libs/constants';
-import { ZakatTypes } from '../types';
+import { type ZakatTypes } from '../types';
 
 const initialInput = {
 	penghasilan: {
