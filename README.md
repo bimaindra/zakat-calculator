@@ -2,7 +2,7 @@ This is a Simple Calculator Zakat bootstrapped with [`Vite`](https://vitejs.dev/
 
 ## Getting Started
 
-Clone this repository. 
+Clone this repository.
 
 Enter the directory, then run this command to install the packages:
 

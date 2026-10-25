@@ -47,3 +47,7 @@ Thumbs.db
 # Other
 *.tgz
 *.tar.gz
+# Generated
+src/routeTree.gen.ts
+.tanstack/
+.netlify/

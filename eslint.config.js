@@ -6,7 +6,17 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'node_modules/**', '.vscode/**', 'coverage/**', '*.config.js', '*.config.ts']
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      '.vscode/**',
+      '.tanstack/**',
+      '.netlify/**',
+      'coverage/**',
+      'src/routeTree.gen.ts',
+      '*.config.js',
+      '*.config.ts',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -17,8 +27,8 @@ export default tseslint.config(
       sourceType: 'module',
       parserOptions: {
         ecmaFeatures: {
-          jsx: true
-        }
+          jsx: true,
+        },
       },
       globals: {
         console: 'readonly',
@@ -39,13 +49,13 @@ export default tseslint.config(
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
         setInterval: 'readonly',
-        clearInterval: 'readonly'
-      }
+        clearInterval: 'readonly',
+      },
     },
     plugins: {
-      'react': react,
+      react: react,
       'react-hooks': reactHooks,
-      'jsx-a11y': jsxA11y
+      'jsx-a11y': jsxA11y,
     },
     rules: {
       // React specific rules
@@ -107,12 +117,12 @@ export default tseslint.config(
       'jsx-a11y/no-redundant-roles': 'error',
       'jsx-a11y/role-has-required-aria-props': 'error',
       'jsx-a11y/role-supports-aria-props': 'error',
-      'jsx-a11y/scope': 'error'
+      'jsx-a11y/scope': 'error',
     },
     settings: {
       react: {
-        version: 'detect'
-      }
-    }
+        version: 'detect',
+      },
+    },
   }
 );

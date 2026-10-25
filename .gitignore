@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# TanStack Start / Netlify
+.tanstack
+.netlify
+.output
