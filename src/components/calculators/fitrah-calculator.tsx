@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { CalculatorPage } from '@/components/calculator/calculator-page';
 import { CurrencyField } from '@/components/calculator/currency-field';
 import { StepperField } from '@/components/calculator/stepper-field';
+import { getCalculator } from '@/content/calculators';
 import { formatDecimal, formatRupiah } from '@/lib/format';
 import { DEFAULT_RICE_PRICE_PER_KG, FITRAH_RICE_KG, calculateFitrah } from '@/lib/zakat';
 
@@ -14,6 +15,8 @@ export function FitrahCalculator({ children }: { children?: ReactNode }) {
 
   return (
     <CalculatorPage
+      calculator={getCalculator('fitrah')}
+      shareLabel="Zakat fitrah keluarga saya"
       heading="Kalkulator Zakat Fitrah"
       lead="Hitung zakat fitrah untuk seluruh anggota keluarga: 2,5 kg beras atau uang senilai itu untuk setiap jiwa, dibayar sebelum salat Idulfitri."
       usesGoldPrice={false}

@@ -1,25 +1,33 @@
 import type { ReactNode } from 'react';
+import type { CalculatorInfo } from '@/content/calculators';
 import { CalculatorTabs } from './calculator-tabs';
+import { HistoryList } from './history-list';
+import { ResultActions } from './result-actions';
 import { GoldPriceBadge } from './gold-price-badge';
 import { MobileResultBar, ResultPanel, type ResultPanelProps } from './result-panel';
 import { PatternBackdrop } from '@/components/pattern-backdrop';
 
 interface CalculatorPageProps {
+  calculator: CalculatorInfo;
   heading: string;
   lead: string;
   /** Sembunyikan harga emas untuk zakat yang tidak memakai nisab emas (fitrah). */
   usesGoldPrice?: boolean;
   fields: ReactNode;
-  result: ResultPanelProps;
+  result: Omit<ResultPanelProps, 'actions'>;
+  /** Kalimat pembuka teks berbagi, mis. "Zakat profesi saya bulan ini". */
+  shareLabel: string;
   children?: ReactNode;
 }
 
 export function CalculatorPage({
+  calculator,
   heading,
   lead,
   usesGoldPrice = true,
   fields,
   result,
+  shareLabel,
   children,
 }: CalculatorPageProps) {
   return (
@@ -46,8 +54,21 @@ export function CalculatorPage({
           {usesGoldPrice && <GoldPriceBadge />}
           {fields}
         </form>
-        <div className="lg:sticky lg:top-24">
-          <ResultPanel {...result} />
+        <div className="space-y-6 lg:sticky lg:top-24">
+          <ResultPanel
+            {...result}
+            actions={
+              result.status === 'wajib' && result.amount > 0 ? (
+                <ResultActions
+                  type={calculator.id}
+                  amount={result.amount}
+                  shareLabel={shareLabel}
+                  path={calculator.path}
+                />
+              ) : null
+            }
+          />
+          <HistoryList />
         </div>
       </div>
 

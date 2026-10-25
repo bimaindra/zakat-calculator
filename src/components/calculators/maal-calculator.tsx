@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { CalculatorPage } from '@/components/calculator/calculator-page';
 import { CurrencyField } from '@/components/calculator/currency-field';
 import { useGoldPrice } from '@/context/gold-price-context';
+import { getCalculator } from '@/content/calculators';
 import { formatRupiah } from '@/lib/format';
 import { calculateMaal } from '@/lib/zakat';
 
@@ -18,6 +19,8 @@ export function MaalCalculator({ children }: { children?: ReactNode }) {
 
   return (
     <CalculatorPage
+      calculator={getCalculator('maal')}
+      shareLabel="Zakat maal saya tahun ini"
       heading="Kalkulator Zakat Maal"
       lead="Hitung zakat harta yang telah Anda miliki selama satu tahun hijriah (haul): 2,5% dari harta bersih bila mencapai nisab 85 gram emas."
       fields={

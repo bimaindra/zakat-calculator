@@ -1,6 +1,7 @@
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { cn, formatRupiah } from '@/lib/format';
+import { AnimatedAmount } from './animated-amount';
 import { PatternBackdrop } from '@/components/pattern-backdrop';
 
 export type ResultStatus = 'empty' | 'wajib' | 'belum';
@@ -36,9 +37,31 @@ export function ResultPanel({
     900
   );
   const progress = Math.min(1, nisabRatio ?? 0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const previousStatus = useRef(status);
+
+  // Sorotan singkat saat status berubah menjadi wajib zakat.
+  useEffect(() => {
+    const node = sectionRef.current;
+    const becameWajib = status === 'wajib' && previousStatus.current !== 'wajib';
+    previousStatus.current = status;
+    if (!node || !becameWajib || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    node.animate(
+      [
+        {
+          transform: 'scale(0.98)',
+          boxShadow: '0 0 0 0 color-mix(in oklch, var(--gold) 55%, transparent)',
+        },
+        { transform: 'scale(1.01)', offset: 0.5 },
+        { transform: 'scale(1)', boxShadow: '0 0 0 18px transparent' },
+      ],
+      { duration: 700, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+    );
+  }, [status]);
 
   return (
     <section
+      ref={sectionRef}
       id="hasil"
       aria-labelledby="hasil-title"
       className={cn(
@@ -60,8 +83,8 @@ export function ResultPanel({
           >
             {title}
           </h2>
-          <p className="tabular text-4xl font-extrabold tracking-tight sm:text-5xl">
-            {formatRupiah(amount)}
+          <p className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+            <AnimatedAmount value={amount} className="tabular" />
           </p>
           <p className={status === 'wajib' ? 'text-on-primary/90' : 'text-ink-muted'}>{message}</p>
         </div>
@@ -124,7 +147,9 @@ export function MobileResultBar({ title, amount }: { title: string; amount: numb
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
         <div className="min-w-0">
           <p className="truncate text-xs font-medium text-ink-muted">{title}</p>
-          <p className="tabular text-xl font-extrabold">{formatRupiah(amount)}</p>
+          <p className="text-xl font-extrabold">
+            <AnimatedAmount value={amount} className="tabular" />
+          </p>
         </div>
         <a
           href="#hasil"

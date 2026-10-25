@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { CalculatorPage } from '@/components/calculator/calculator-page';
 import { CurrencyField } from '@/components/calculator/currency-field';
 import { useGoldPrice } from '@/context/gold-price-context';
+import { getCalculator } from '@/content/calculators';
 import { formatRupiah } from '@/lib/format';
 import { calculateProfesi } from '@/lib/zakat';
 
@@ -15,6 +16,8 @@ export function ProfesiCalculator({ children }: { children?: ReactNode }) {
 
   return (
     <CalculatorPage
+      calculator={getCalculator('profesi')}
+      shareLabel="Zakat profesi saya bulan ini"
       heading="Kalkulator Zakat Profesi"
       lead="Hitung zakat penghasilan bulanan Anda: 2,5% dari gaji dan pendapatan lain bila mencapai nisab 85 gram emas per tahun."
       fields={

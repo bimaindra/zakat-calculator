@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { CalculatorPage } from '@/components/calculator/calculator-page';
 import { CurrencyField } from '@/components/calculator/currency-field';
 import { useGoldPrice } from '@/context/gold-price-context';
+import { getCalculator } from '@/content/calculators';
 import { formatRupiah } from '@/lib/format';
 import { calculatePerdagangan } from '@/lib/zakat';
 
@@ -18,6 +19,8 @@ export function PerdaganganCalculator({ children }: { children?: ReactNode }) {
 
   return (
     <CalculatorPage
+      calculator={getCalculator('perdagangan')}
+      shareLabel="Zakat usaha saya tahun ini"
       heading="Kalkulator Zakat Perdagangan"
       lead="Hitung zakat usaha Anda setiap tutup buku tahunan: 2,5% dari aset lancar usaha dikurangi utang jangka pendek, bila mencapai nisab 85 gram emas."
       fields={
