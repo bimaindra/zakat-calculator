@@ -10,33 +10,89 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ZakatFitrahRouteImport } from './routes/zakat-fitrah'
+import { Route as ZakatMaalRouteImport } from './routes/zakat-maal'
+import { Route as ZakatPerdaganganRouteImport } from './routes/zakat-perdagangan'
+import { Route as ZakatProfesiRouteImport } from './routes/zakat-profesi'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ZakatFitrahRoute = ZakatFitrahRouteImport.update({
+  id: '/zakat-fitrah',
+  path: '/zakat-fitrah',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZakatMaalRoute = ZakatMaalRouteImport.update({
+  id: '/zakat-maal',
+  path: '/zakat-maal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZakatPerdaganganRoute = ZakatPerdaganganRouteImport.update({
+  id: '/zakat-perdagangan',
+  path: '/zakat-perdagangan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZakatProfesiRoute = ZakatProfesiRouteImport.update({
+  id: '/zakat-profesi',
+  path: '/zakat-profesi',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/zakat-fitrah': typeof ZakatFitrahRoute
+  '/zakat-maal': typeof ZakatMaalRoute
+  '/zakat-perdagangan': typeof ZakatPerdaganganRoute
+  '/zakat-profesi': typeof ZakatProfesiRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/zakat-fitrah': typeof ZakatFitrahRoute
+  '/zakat-maal': typeof ZakatMaalRoute
+  '/zakat-perdagangan': typeof ZakatPerdaganganRoute
+  '/zakat-profesi': typeof ZakatProfesiRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/zakat-fitrah': typeof ZakatFitrahRoute
+  '/zakat-maal': typeof ZakatMaalRoute
+  '/zakat-perdagangan': typeof ZakatPerdaganganRoute
+  '/zakat-profesi': typeof ZakatProfesiRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/zakat-fitrah'
+    | '/zakat-maal'
+    | '/zakat-perdagangan'
+    | '/zakat-profesi'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/zakat-fitrah'
+    | '/zakat-maal'
+    | '/zakat-perdagangan'
+    | '/zakat-profesi'
+  id:
+    | '__root__'
+    | '/'
+    | '/zakat-fitrah'
+    | '/zakat-maal'
+    | '/zakat-perdagangan'
+    | '/zakat-profesi'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ZakatFitrahRoute: typeof ZakatFitrahRoute
+  ZakatMaalRoute: typeof ZakatMaalRoute
+  ZakatPerdaganganRoute: typeof ZakatPerdaganganRoute
+  ZakatProfesiRoute: typeof ZakatProfesiRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +104,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/zakat-fitrah': {
+      id: '/zakat-fitrah'
+      path: '/zakat-fitrah'
+      fullPath: '/zakat-fitrah'
+      preLoaderRoute: typeof ZakatFitrahRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zakat-maal': {
+      id: '/zakat-maal'
+      path: '/zakat-maal'
+      fullPath: '/zakat-maal'
+      preLoaderRoute: typeof ZakatMaalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zakat-perdagangan': {
+      id: '/zakat-perdagangan'
+      path: '/zakat-perdagangan'
+      fullPath: '/zakat-perdagangan'
+      preLoaderRoute: typeof ZakatPerdaganganRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zakat-profesi': {
+      id: '/zakat-profesi'
+      path: '/zakat-profesi'
+      fullPath: '/zakat-profesi'
+      preLoaderRoute: typeof ZakatProfesiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ZakatFitrahRoute: ZakatFitrahRoute,
+  ZakatMaalRoute: ZakatMaalRoute,
+  ZakatPerdaganganRoute: ZakatPerdaganganRoute,
+  ZakatProfesiRoute: ZakatProfesiRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

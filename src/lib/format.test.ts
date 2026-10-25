@@ -1,0 +1,36 @@
+import { describe, expect, it } from 'vitest';
+import { cn, formatDate, formatRupiah, parseDigits } from './format';
+
+describe('formatRupiah', () => {
+  it('formats with Indonesian grouping and no decimals', () => {
+    expect(formatRupiah(1_234_567.6)).toBe('Rp 1.234.568');
+  });
+});
+
+describe('formatDate', () => {
+  it('formats ISO dates in Indonesian', () => {
+    expect(formatDate('2026-10-25')).toBe('25 Oktober 2026');
+  });
+
+  it('returns the input when it is not a date', () => {
+    expect(formatDate('kemarin')).toBe('kemarin');
+  });
+});
+
+describe('parseDigits', () => {
+  it.each([
+    ['Rp 1.500.000', 1_500_000],
+    ['007', 7],
+    ['', 0],
+    ['abc', 0],
+    ['-250', 250],
+  ])('parses %j as %d', (input, expected) => {
+    expect(parseDigits(input)).toBe(expected);
+  });
+});
+
+describe('cn', () => {
+  it('joins truthy class names', () => {
+    expect(cn('a', false, null, 'b', undefined)).toBe('a b');
+  });
+});
