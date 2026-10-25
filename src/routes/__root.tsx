@@ -15,7 +15,6 @@ export const Route = createRootRoute({
       { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
       { name: 'theme-color', content: '#fbf8f1', media: '(prefers-color-scheme: light)' },
       { name: 'theme-color', content: '#0d1f1a', media: '(prefers-color-scheme: dark)' },
-      { title: 'Kalkulator Zakat' },
     ],
     links: [
       { rel: 'preload', href: fontUrl, as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },

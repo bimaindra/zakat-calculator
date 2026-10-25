@@ -1,12 +1,16 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
+import { ArticleContent } from '@/components/article/article-content';
 import { GoldPriceBadge } from '@/components/calculator/gold-price-badge';
+import { PatternBackdrop } from '@/components/pattern-backdrop';
 import { useGoldPrice } from '@/context/gold-price-context';
+import { BUILD_YEAR, HOME_ARTICLE } from '@/content/articles';
 import { CALCULATORS, type CalculatorId } from '@/content/calculators';
+import { homeHead } from '@/content/head';
 import { formatRupiah } from '@/lib/format';
 import { DEFAULT_RICE_PRICE_PER_KG, FITRAH_RICE_KG, monthlyNisab, yearlyNisab } from '@/lib/zakat';
-import { PatternBackdrop } from '@/components/pattern-backdrop';
 
 export const Route = createFileRoute('/')({
+  head: homeHead,
   component: Home,
 });
 
@@ -32,7 +36,7 @@ function Home() {
             Nisab mengikuti harga emas terkini
           </p>
           <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight text-balance sm:text-6xl">
-            Kalkulator Zakat Online <span className="text-primary">2026</span>
+            Kalkulator Zakat Online <span className="text-primary">{BUILD_YEAR}</span>
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-pretty text-ink-muted sm:text-xl">
             Hitung zakat profesi, maal, fitrah, dan perdagangan dalam hitungan detik. Gratis, tanpa
@@ -76,6 +80,12 @@ function Home() {
           ))}
         </ul>
       </section>
+
+      <ArticleContent
+        sections={HOME_ARTICLE.sections}
+        faq={HOME_ARTICLE.faq}
+        sources={HOME_ARTICLE.sources}
+      />
     </main>
   );
 }

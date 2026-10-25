@@ -74,7 +74,7 @@ export function CalculatorPage({
 
       {children}
 
-      <MobileResultBar title={result.title} amount={result.amount} />
+      {result.status !== 'empty' && <MobileResultBar title={result.title} amount={result.amount} />}
     </main>
   );
 }

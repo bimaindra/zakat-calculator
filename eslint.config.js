@@ -124,5 +124,12 @@ export default tseslint.config(
         version: 'detect',
       },
     },
+  },
+  {
+    files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      globals: { process: 'readonly', console: 'readonly' },
+    },
+    rules: { 'no-console': 'off' },
   }
 );
