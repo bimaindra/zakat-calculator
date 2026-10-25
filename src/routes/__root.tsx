@@ -1,10 +1,11 @@
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
+import { NotFound } from '@/components/not-found';
 import { SkipLink } from '@/components/skip-link';
 import { GoldPriceProvider } from '@/context/gold-price-context';
-import { themeInitScript } from '@/lib/theme';
+import { syncThemeFromStorage, themeInitScript } from '@/lib/theme';
 import appCss from '@/styles/app.css?url';
 import fontUrl from '@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url';
 
@@ -24,9 +25,12 @@ export const Route = createRootRoute({
     scripts: [{ children: themeInitScript }],
   }),
   component: RootComponent,
+  notFoundComponent: NotFound,
 });
 
 function RootComponent() {
+  useEffect(syncThemeFromStorage, []);
+
   return (
     <RootDocument>
       <GoldPriceProvider>
