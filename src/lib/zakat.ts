@@ -2,6 +2,8 @@ export const ZAKAT_RATE = 0.025;
 export const NISAB_GOLD_GRAMS = 85;
 export const FITRAH_RICE_KG = 2.5;
 export const MONTHS_PER_YEAR = 12;
+/** Setara Rp 47.000 per jiwa (SK BAZNAS RI, wilayah Jabodetabek). Pengguna dapat mengubahnya. */
+export const DEFAULT_RICE_PRICE_PER_KG = 18_800;
 
 export interface NisabResult {
   /** Total harta/penghasilan yang dihitung (tidak pernah negatif). */

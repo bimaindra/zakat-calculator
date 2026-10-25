@@ -1,13 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { ProfesiCalculator } from '@/components/calculators/profesi-calculator';
 
 export const Route = createFileRoute('/zakat-profesi')({
-  component: Page,
+  component: ProfesiCalculator,
 });
-
-function Page() {
-  return (
-    <main id="main" className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <h1 className="text-3xl font-bold">Zakat profesi</h1>
-    </main>
-  );
-}

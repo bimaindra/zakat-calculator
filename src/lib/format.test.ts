@@ -1,9 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { cn, formatDate, formatRupiah, parseDigits } from './format';
+import { cn, formatDate, formatDecimal, formatRupiah, parseDigits } from './format';
 
 describe('formatRupiah', () => {
   it('formats with Indonesian grouping and no decimals', () => {
     expect(formatRupiah(1_234_567.6)).toBe('Rp 1.234.568');
+  });
+});
+
+describe('formatDecimal', () => {
+  it('keeps decimals with an Indonesian comma', () => {
+    expect(formatDecimal(2.5)).toBe('2,5');
+    expect(formatDecimal(10)).toBe('10');
   });
 });
 

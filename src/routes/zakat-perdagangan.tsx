@@ -1,13 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { PerdaganganCalculator } from '@/components/calculators/perdagangan-calculator';
 
 export const Route = createFileRoute('/zakat-perdagangan')({
-  component: Page,
+  component: PerdaganganCalculator,
 });
-
-function Page() {
-  return (
-    <main id="main" className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <h1 className="text-3xl font-bold">Zakat perdagangan</h1>
-    </main>
-  );
-}

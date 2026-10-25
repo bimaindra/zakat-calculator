@@ -6,6 +6,8 @@ const rupiahFormatter = new Intl.NumberFormat('id-ID', {
 
 const numberFormatter = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 });
 
+const decimalFormatter = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 2 });
+
 const dateFormatter = new Intl.DateTimeFormat('id-ID', {
   day: 'numeric',
   month: 'long',
@@ -20,6 +22,11 @@ export function formatRupiah(value: number) {
 
 export function formatNumber(value: number) {
   return numberFormatter.format(value);
+}
+
+/** 2.5 → '2,5'. */
+export function formatDecimal(value: number) {
+  return decimalFormatter.format(value);
 }
 
 /** '2026-10-25' → '25 Oktober 2026'. */

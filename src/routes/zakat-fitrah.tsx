@@ -1,13 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { FitrahCalculator } from '@/components/calculators/fitrah-calculator';
 
 export const Route = createFileRoute('/zakat-fitrah')({
-  component: Page,
+  component: FitrahCalculator,
 });
-
-function Page() {
-  return (
-    <main id="main" className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <h1 className="text-3xl font-bold">Zakat fitrah</h1>
-    </main>
-  );
-}
