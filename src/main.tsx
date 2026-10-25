@@ -8,13 +8,13 @@ import { ZakatProvider } from './context/zakat-context';
 import './assets/styles/index.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-	<React.StrictMode>
-		<ChakraProvider theme={theme}>
-			<ErrorBoundary>
-				<ZakatProvider>
-					<App />
-				</ZakatProvider>
-			</ErrorBoundary>
-		</ChakraProvider>
-	</React.StrictMode>
+  <React.StrictMode>
+    <ChakraProvider theme={theme}>
+      <ErrorBoundary>
+        <ZakatProvider>
+          <App />
+        </ZakatProvider>
+      </ErrorBoundary>
+    </ChakraProvider>
+  </React.StrictMode>
 );
