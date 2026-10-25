@@ -78,7 +78,7 @@ export function ResultPanel({
             id="hasil-title"
             className={cn(
               'text-sm font-semibold tracking-wide uppercase',
-              status === 'wajib' ? 'text-on-primary/80' : 'text-ink-muted'
+              status === 'wajib' ? 'text-on-primary/90' : 'text-ink-muted'
             )}
           >
             {title}
@@ -123,7 +123,7 @@ export function ResultPanel({
           >
             {details.map((detail) => (
               <div key={detail.label} className="flex justify-between gap-4">
-                <dt className={status === 'wajib' ? 'text-on-primary/80' : 'text-ink-muted'}>
+                <dt className={status === 'wajib' ? 'text-on-primary/90' : 'text-ink-muted'}>
                   {detail.label}
                 </dt>
                 <dd className="tabular text-right font-semibold">{detail.value}</dd>

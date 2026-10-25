@@ -67,7 +67,7 @@ export function ResultActions({ type, amount, shareLabel, path }: ResultActionsP
         href={whatsappShareUrl(text)}
         target="_blank"
         rel="noopener noreferrer"
-        className="block text-center text-sm font-medium text-on-primary/80 underline-offset-4 hover:underline"
+        className="block text-center text-sm font-medium text-on-primary/90 underline-offset-4 hover:underline"
       >
         Kirim lewat WhatsApp
       </a>

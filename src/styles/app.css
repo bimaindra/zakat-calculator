@@ -10,8 +10,8 @@
   --ink: oklch(0.24 0.035 165);
   --ink-muted: oklch(0.47 0.03 165);
   --line: oklch(0.9 0.015 120);
-  --primary: oklch(0.47 0.1 165);
-  --primary-strong: oklch(0.38 0.085 165);
+  --primary: oklch(0.43 0.095 165);
+  --primary-strong: oklch(0.35 0.08 165);
   --primary-soft: oklch(0.94 0.035 165);
   --on-primary: oklch(0.99 0.01 85);
   --gold: oklch(0.72 0.12 80);

@@ -46,14 +46,17 @@ export function CalculatorPage({
       </div>
 
       <div className="mx-auto grid max-w-6xl items-start gap-6 px-4 sm:px-6 lg:grid-cols-[1fr_26rem] lg:gap-10">
-        <form
-          className="space-y-6 rounded-3xl border border-line bg-surface p-6 sm:p-8"
-          onSubmit={(event) => event.preventDefault()}
-          aria-label={`Formulir ${heading.toLowerCase()}`}
-        >
+        {/* Badge berisi <dialog><form>, jadi harus di luar form kalkulator (form tidak boleh bersarang). */}
+        <div className="space-y-6 rounded-3xl border border-line bg-surface p-6 sm:p-8">
           {usesGoldPrice && <GoldPriceBadge />}
-          {fields}
-        </form>
+          <form
+            className="space-y-6"
+            onSubmit={(event) => event.preventDefault()}
+            aria-label={`Formulir ${heading.toLowerCase()}`}
+          >
+            {fields}
+          </form>
+        </div>
         <div className="space-y-6 lg:sticky lg:top-24">
           <ResultPanel
             {...result}
