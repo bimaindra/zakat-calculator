@@ -3,12 +3,15 @@ import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { cn, formatRupiah } from '@/lib/format';
 import { AnimatedAmount } from './animated-amount';
 import { PatternBackdrop } from '@/components/pattern-backdrop';
+import { PendingValue } from '@/components/pending-value';
 
 export type ResultStatus = 'empty' | 'wajib' | 'belum';
 
 export interface ResultDetail {
   label: string;
   value: string;
+  /** Nilai masih memakai harga emas bawaan; tampilkan sebagai skeleton. */
+  pending?: boolean;
 }
 
 export interface ResultPanelProps {
@@ -126,7 +129,9 @@ export function ResultPanel({
                 <dt className={status === 'wajib' ? 'text-on-primary/90' : 'text-ink-muted'}>
                   {detail.label}
                 </dt>
-                <dd className="tabular text-right font-semibold">{detail.value}</dd>
+                <dd className="tabular text-right font-semibold">
+                  <PendingValue pending={Boolean(detail.pending)}>{detail.value}</PendingValue>
+                </dd>
               </div>
             ))}
           </dl>

@@ -7,7 +7,7 @@ import { formatRupiah } from '@/lib/format';
 import { calculatePerdagangan } from '@/lib/zakat';
 
 export function PerdaganganCalculator({ children }: { children?: ReactNode }) {
-  const { price } = useGoldPrice();
+  const { price, isPricePending } = useGoldPrice();
   const [inventory, setInventory] = useState(0);
   const [cash, setCash] = useState(0);
   const [receivables, setReceivables] = useState(0);
@@ -59,7 +59,7 @@ export function PerdaganganCalculator({ children }: { children?: ReactNode }) {
               : 'Aset usaha bersih belum mencapai nisab, sehingga belum wajib zakat perdagangan.',
         details: [
           { label: 'Aset usaha bersih', value: formatRupiah(result.total) },
-          { label: 'Nisab per tahun', value: formatRupiah(result.nisab) },
+          { label: 'Nisab per tahun', value: formatRupiah(result.nisab), pending: isPricePending },
           { label: 'Kadar zakat', value: '2,5%' },
         ],
       }}

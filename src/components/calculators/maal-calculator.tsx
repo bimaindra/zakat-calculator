@@ -7,7 +7,7 @@ import { formatRupiah } from '@/lib/format';
 import { calculateMaal } from '@/lib/zakat';
 
 export function MaalCalculator({ children }: { children?: ReactNode }) {
-  const { price } = useGoldPrice();
+  const { price, isPricePending } = useGoldPrice();
   const [savings, setSavings] = useState(0);
   const [gold, setGold] = useState(0);
   const [investments, setInvestments] = useState(0);
@@ -64,7 +64,7 @@ export function MaalCalculator({ children }: { children?: ReactNode }) {
               : 'Harta bersih Anda belum mencapai nisab, sehingga belum wajib zakat maal.',
         details: [
           { label: 'Harta bersih', value: formatRupiah(result.total) },
-          { label: 'Nisab per tahun', value: formatRupiah(result.nisab) },
+          { label: 'Nisab per tahun', value: formatRupiah(result.nisab), pending: isPricePending },
           { label: 'Kadar zakat', value: '2,5%' },
         ],
       }}

@@ -13,7 +13,7 @@ const PERIOD_OPTIONS = [
 ] as const;
 
 export function ProfesiCalculator({ children }: { children?: ReactNode }) {
-  const { price } = useGoldPrice();
+  const { price, isPricePending } = useGoldPrice();
   const [period, setPeriod] = useState<ProfesiPeriod>('bulanan');
   const [monthlyIncome, setMonthlyIncome] = useState(0);
   const [bonus, setBonus] = useState(0);
@@ -84,7 +84,11 @@ export function ProfesiCalculator({ children }: { children?: ReactNode }) {
             label: yearly ? 'Total penghasilan setahun' : 'Total penghasilan',
             value: formatRupiah(result.total),
           },
-          { label: `Nisab per ${unit}`, value: formatRupiah(result.nisab) },
+          {
+            label: `Nisab per ${unit}`,
+            value: formatRupiah(result.nisab),
+            pending: isPricePending,
+          },
           { label: 'Kadar zakat', value: '2,5%' },
         ],
       }}

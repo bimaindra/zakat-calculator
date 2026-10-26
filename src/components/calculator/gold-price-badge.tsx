@@ -2,6 +2,7 @@ import { useRef, useState, type FormEvent } from 'react';
 import { useGoldPrice } from '@/context/gold-price-context';
 import { formatDate, formatRupiah } from '@/lib/format';
 import type { GoldPriceSource } from '@/lib/gold-price';
+import { PendingValue } from '@/components/pending-value';
 import { CurrencyField } from './currency-field';
 
 const SOURCE_LABEL: Record<GoldPriceSource, string> = {
@@ -12,7 +13,7 @@ const SOURCE_LABEL: Record<GoldPriceSource, string> = {
 };
 
 export function GoldPriceBadge() {
-  const { price, marketPrice, isLoading, setManualPrice } = useGoldPrice();
+  const { price, marketPrice, isLoading, isPricePending, setManualPrice } = useGoldPrice();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [draft, setDraft] = useState(price.pricePerGram);
 
@@ -36,16 +37,26 @@ export function GoldPriceBadge() {
     <>
       <div
         className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl bg-gold-soft px-4 py-3 text-sm"
-        aria-busy={isLoading}
+        aria-busy={isPricePending}
       >
         <span aria-hidden="true">✦</span>
         <span>
           Harga emas{' '}
-          <strong className="tabular font-bold">{formatRupiah(price.pricePerGram)}/g</strong>
+          <strong className="tabular font-bold">
+            <PendingValue pending={isPricePending}>
+              {formatRupiah(price.pricePerGram)}/g
+            </PendingValue>
+          </strong>
         </span>
         <span className="text-ink-muted">
-          · {SOURCE_LABEL[price.source]}
-          {price.source !== 'manual' && `, ${formatDate(price.date)}`}
+          {isPricePending ? (
+            '· memuat harga terkini…'
+          ) : (
+            <>
+              · {SOURCE_LABEL[price.source]}
+              {price.source !== 'manual' && `, ${formatDate(price.date)}`}
+            </>
+          )}
         </span>
         <button
           type="button"

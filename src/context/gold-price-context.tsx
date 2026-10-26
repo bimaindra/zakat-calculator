@@ -13,6 +13,11 @@ interface GoldPriceContextValue {
   /** Harga dari sumber otomatis, terlepas dari override. */
   marketPrice: GoldPrice;
   isLoading: boolean;
+  /**
+   * True sampai harga yang dipakai sudah final (harga manual atau hasil cache/fetch). Selama itu
+   * angka yang bergantung pada harga emas masih harga bawaan dari prerender, jadi tampilkan skeleton.
+   */
+  isPricePending: boolean;
   setManualPrice: (pricePerGram: number | null) => void;
 }
 
@@ -22,10 +27,12 @@ export function GoldPriceProvider({ children }: { children: ReactNode }) {
   const [marketPrice, setMarketPrice] = useState<GoldPrice>(DEFAULT_GOLD_PRICE);
   const [manualPrice, setManualPriceState] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasReadOverride, setHasReadOverride] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     setManualPriceState(readOverride(localStorage));
+    setHasReadOverride(true);
     resolveGoldPrice({ storage: localStorage }).then((resolved) => {
       if (cancelled) return;
       setMarketPrice(resolved);
@@ -46,8 +53,10 @@ export function GoldPriceProvider({ children }: { children: ReactNode }) {
       ? marketPrice
       : { pricePerGram: manualPrice, date: marketPrice.date, source: 'manual' };
 
+  const isPricePending = !hasReadOverride || (manualPrice === null && isLoading);
+
   return (
-    <GoldPriceContext value={{ price, marketPrice, isLoading, setManualPrice }}>
+    <GoldPriceContext value={{ price, marketPrice, isLoading, isPricePending, setManualPrice }}>
       {children}
     </GoldPriceContext>
   );

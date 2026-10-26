@@ -2,6 +2,7 @@ import { Link, createFileRoute } from '@tanstack/react-router';
 import { ArticleContent } from '@/components/article/article-content';
 import { GoldPriceBadge } from '@/components/calculator/gold-price-badge';
 import { PatternBackdrop } from '@/components/pattern-backdrop';
+import { PendingValue } from '@/components/pending-value';
 import { ZakatIconTile } from '@/components/zakat-icon';
 import { useGoldPrice } from '@/context/gold-price-context';
 import { BUILD_YEAR, HOME_ARTICLE } from '@/content/articles';
@@ -16,16 +17,28 @@ export const Route = createFileRoute('/')({
 });
 
 function Home() {
-  const { price } = useGoldPrice();
+  const { price, isPricePending } = useGoldPrice();
 
-  const keyFigure: Record<CalculatorId, { label: string; value: string }> = {
-    profesi: { label: 'Nisab per bulan', value: formatRupiah(monthlyNisab(price.pricePerGram)) },
-    maal: { label: 'Nisab per tahun', value: formatRupiah(yearlyNisab(price.pricePerGram)) },
+  const keyFigure: Record<CalculatorId, { label: string; value: string; usesGold?: boolean }> = {
+    profesi: {
+      label: 'Nisab per bulan',
+      value: formatRupiah(monthlyNisab(price.pricePerGram)),
+      usesGold: true,
+    },
+    maal: {
+      label: 'Nisab per tahun',
+      value: formatRupiah(yearlyNisab(price.pricePerGram)),
+      usesGold: true,
+    },
     fitrah: {
       label: 'Per jiwa, mulai',
       value: formatRupiah(FITRAH_RICE_KG * DEFAULT_RICE_PRICE_PER_KG),
     },
-    perdagangan: { label: 'Nisab per tahun', value: formatRupiah(yearlyNisab(price.pricePerGram)) },
+    perdagangan: {
+      label: 'Nisab per tahun',
+      value: formatRupiah(yearlyNisab(price.pricePerGram)),
+      usesGold: true,
+    },
   };
 
   return (
@@ -78,7 +91,13 @@ function Home() {
                 </div>
                 <div className="flex items-baseline justify-between gap-4 border-t border-line pt-4 text-sm">
                   <span className="text-ink-muted">{keyFigure[calculator.id].label}</span>
-                  <span className="tabular font-bold">{keyFigure[calculator.id].value}</span>
+                  <span className="tabular font-bold">
+                    <PendingValue
+                      pending={Boolean(keyFigure[calculator.id].usesGold) && isPricePending}
+                    >
+                      {keyFigure[calculator.id].value}
+                    </PendingValue>
+                  </span>
                 </div>
               </Link>
             </li>
