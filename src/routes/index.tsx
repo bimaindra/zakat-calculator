@@ -19,16 +19,14 @@ export const Route = createFileRoute('/')({
 function Home() {
   const { price, isPricePending } = useGoldPrice();
 
-  const keyFigure: Record<CalculatorId, { label: string; value: string; usesGold?: boolean }> = {
+  const keyFigure: Record<CalculatorId, { label: string; value: string }> = {
     profesi: {
       label: 'Nisab per bulan',
       value: formatRupiah(monthlyNisab(price.pricePerGram)),
-      usesGold: true,
     },
     maal: {
       label: 'Nisab per tahun',
       value: formatRupiah(yearlyNisab(price.pricePerGram)),
-      usesGold: true,
     },
     fitrah: {
       label: 'Per jiwa, mulai',
@@ -37,7 +35,6 @@ function Home() {
     perdagangan: {
       label: 'Nisab per tahun',
       value: formatRupiah(yearlyNisab(price.pricePerGram)),
-      usesGold: true,
     },
   };
 
@@ -92,9 +89,7 @@ function Home() {
                 <div className="flex items-baseline justify-between gap-4 border-t border-line pt-4 text-sm">
                   <span className="text-ink-muted">{keyFigure[calculator.id].label}</span>
                   <span className="tabular font-bold">
-                    <PendingValue
-                      pending={Boolean(keyFigure[calculator.id].usesGold) && isPricePending}
-                    >
+                    <PendingValue pending={calculator.usesGoldPrice && isPricePending}>
                       {keyFigure[calculator.id].value}
                     </PendingValue>
                   </span>

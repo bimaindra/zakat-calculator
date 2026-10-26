@@ -9,6 +9,8 @@ export interface CalculatorInfo {
   tabLabel: string;
   /** Ringkasan satu kalimat untuk kartu di beranda. */
   summary: string;
+  /** Nisab bergantung pada harga emas (semua kecuali fitrah). */
+  usesGoldPrice: boolean;
 }
 
 export const CALCULATORS: readonly CalculatorInfo[] = [
@@ -18,6 +20,7 @@ export const CALCULATORS: readonly CalculatorInfo[] = [
     navLabel: 'Zakat Profesi',
     tabLabel: 'Profesi',
     summary: 'Zakat dari gaji, honor, dan penghasilan rutin bulanan.',
+    usesGoldPrice: true,
   },
   {
     id: 'maal',
@@ -25,6 +28,7 @@ export const CALCULATORS: readonly CalculatorInfo[] = [
     navLabel: 'Zakat Maal',
     tabLabel: 'Maal',
     summary: 'Zakat atas tabungan, emas, dan investasi yang tersimpan setahun.',
+    usesGoldPrice: true,
   },
   {
     id: 'fitrah',
@@ -32,6 +36,7 @@ export const CALCULATORS: readonly CalculatorInfo[] = [
     navLabel: 'Zakat Fitrah',
     tabLabel: 'Fitrah',
     summary: 'Zakat wajib setiap jiwa menjelang Idulfitri.',
+    usesGoldPrice: false,
   },
   {
     id: 'perdagangan',
@@ -39,6 +44,7 @@ export const CALCULATORS: readonly CalculatorInfo[] = [
     navLabel: 'Zakat Perdagangan',
     tabLabel: 'Dagang',
     summary: 'Zakat atas modal usaha, stok barang, dan piutang dagang.',
+    usesGoldPrice: true,
   },
 ];
 

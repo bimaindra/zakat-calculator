@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useGoldPrice } from '@/context/gold-price-context';
 import type { CalculatorInfo } from '@/content/calculators';
 import { CalculatorTabs } from './calculator-tabs';
 import { HistoryList } from './history-list';
@@ -12,10 +13,8 @@ interface CalculatorPageProps {
   calculator: CalculatorInfo;
   heading: string;
   lead: string;
-  /** Sembunyikan harga emas untuk zakat yang tidak memakai nisab emas (fitrah). */
-  usesGoldPrice?: boolean;
   fields: ReactNode;
-  result: Omit<ResultPanelProps, 'actions'>;
+  result: Omit<ResultPanelProps, 'actions' | 'pending'>;
   /** Awal teks berbagi, mis. "Zakat profesiku bulan ini" (lanjut nominal). */
   shareLabel: string;
   children?: ReactNode;
@@ -25,12 +24,15 @@ export function CalculatorPage({
   calculator,
   heading,
   lead,
-  usesGoldPrice = true,
   fields,
   result,
   shareLabel,
   children,
 }: CalculatorPageProps) {
+  const { isPricePending } = useGoldPrice();
+  // Selama harga emas belum final, status wajib/belum masih dihitung dari harga bawaan.
+  const pending = calculator.usesGoldPrice && isPricePending;
+
   return (
     <main id="main" className="pb-28 lg:pb-0">
       <div className="relative overflow-hidden">
@@ -54,7 +56,7 @@ export function CalculatorPage({
       <div className="mx-auto grid max-w-6xl items-start gap-6 px-4 sm:px-6 lg:grid-cols-[1fr_26rem] lg:gap-10">
         {/* Badge berisi <dialog><form>, jadi harus di luar form kalkulator (form tidak boleh bersarang). */}
         <div className="space-y-6 rounded-3xl border border-line bg-surface p-6 sm:p-8">
-          {usesGoldPrice && <GoldPriceBadge />}
+          {calculator.usesGoldPrice && <GoldPriceBadge />}
           <form
             className="space-y-6"
             onSubmit={(event) => event.preventDefault()}
@@ -66,8 +68,9 @@ export function CalculatorPage({
         <div className="space-y-6 lg:sticky lg:top-24">
           <ResultPanel
             {...result}
+            pending={pending}
             actions={
-              result.status === 'wajib' && result.amount > 0 ? (
+              !pending && result.status === 'wajib' && result.amount > 0 ? (
                 <ResultActions
                   type={calculator.id}
                   amount={result.amount}
@@ -83,7 +86,9 @@ export function CalculatorPage({
 
       {children}
 
-      {result.status !== 'empty' && <MobileResultBar title={result.title} amount={result.amount} />}
+      {result.status !== 'empty' && (
+        <MobileResultBar title={result.title} amount={result.amount} pending={pending} />
+      )}
     </main>
   );
 }

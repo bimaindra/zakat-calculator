@@ -24,6 +24,8 @@ export interface ResultPanelProps {
   nisabRatio?: number;
   details: ResultDetail[];
   actions?: ReactNode;
+  /** Harga emas belum final: samarkan nominal dan jangan tampilkan status wajib dulu. */
+  pending?: boolean;
 }
 
 export function ResultPanel({
@@ -34,20 +36,24 @@ export function ResultPanel({
   nisabRatio,
   details,
   actions,
+  pending = false,
 }: ResultPanelProps) {
+  const waiting = pending && status !== 'empty';
+  const shownStatus: ResultStatus = waiting ? 'belum' : status;
+  const shownMessage = waiting ? 'Menunggu harga emas terkini untuk menghitung nisab…' : message;
   const announcement = useDebouncedValue(
-    status === 'empty' ? '' : `${title}: ${formatRupiah(amount)}. ${message}`,
+    shownStatus === 'empty' || waiting ? '' : `${title}: ${formatRupiah(amount)}. ${message}`,
     900
   );
-  const progress = Math.min(1, nisabRatio ?? 0);
+  const progress = waiting ? 0 : Math.min(1, nisabRatio ?? 0);
   const sectionRef = useRef<HTMLElement>(null);
-  const previousStatus = useRef(status);
+  const previousStatus = useRef(shownStatus);
 
   // Sorotan singkat saat status berubah menjadi wajib zakat.
   useEffect(() => {
     const node = sectionRef.current;
-    const becameWajib = status === 'wajib' && previousStatus.current !== 'wajib';
-    previousStatus.current = status;
+    const becameWajib = shownStatus === 'wajib' && previousStatus.current !== 'wajib';
+    previousStatus.current = shownStatus;
     if (!node || !becameWajib || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     node.animate(
       [
@@ -60,7 +66,7 @@ export function ResultPanel({
       ],
       { duration: 700, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
     );
-  }, [status]);
+  }, [shownStatus]);
 
   return (
     <section
@@ -69,7 +75,7 @@ export function ResultPanel({
       aria-labelledby="hasil-title"
       className={cn(
         'relative scroll-mt-24 overflow-hidden rounded-3xl border p-6 transition-colors sm:p-8',
-        status === 'wajib'
+        shownStatus === 'wajib'
           ? 'border-transparent bg-primary text-on-primary'
           : 'border-line bg-surface text-ink'
       )}
@@ -81,27 +87,35 @@ export function ResultPanel({
             id="hasil-title"
             className={cn(
               'text-sm font-semibold tracking-wide uppercase',
-              status === 'wajib' ? 'text-on-primary/90' : 'text-ink-muted'
+              shownStatus === 'wajib' ? 'text-on-primary/90' : 'text-ink-muted'
             )}
           >
             {title}
           </h2>
           <p className="text-4xl font-extrabold tracking-tight sm:text-5xl">
-            <AnimatedAmount value={amount} className="tabular" />
+            <PendingValue pending={waiting}>
+              <AnimatedAmount value={amount} className="tabular" />
+            </PendingValue>
           </p>
-          <p className={status === 'wajib' ? 'text-on-primary/90' : 'text-ink-muted'}>{message}</p>
+          <p className={shownStatus === 'wajib' ? 'text-on-primary/90' : 'text-ink-muted'}>
+            {shownMessage}
+          </p>
         </div>
 
         {nisabRatio !== undefined && (
           <div className="space-y-2">
             <div className="flex justify-between text-sm font-medium">
               <span>Terhadap nisab</span>
-              <span className="tabular">{Math.round((nisabRatio || 0) * 100)}%</span>
+              <span className="tabular">
+                <PendingValue pending={waiting}>
+                  {Math.round((nisabRatio || 0) * 100)}%
+                </PendingValue>
+              </span>
             </div>
             <div
               className={cn(
                 'h-2.5 overflow-hidden rounded-full',
-                status === 'wajib' ? 'bg-on-primary/20' : 'bg-surface-muted'
+                shownStatus === 'wajib' ? 'bg-on-primary/20' : 'bg-surface-muted'
               )}
               role="progressbar"
               aria-label="Persentase terhadap nisab"
@@ -121,12 +135,12 @@ export function ResultPanel({
           <dl
             className={cn(
               'grid gap-3 border-t pt-5 text-sm',
-              status === 'wajib' ? 'border-on-primary/20' : 'border-line'
+              shownStatus === 'wajib' ? 'border-on-primary/20' : 'border-line'
             )}
           >
             {details.map((detail) => (
               <div key={detail.label} className="flex justify-between gap-4">
-                <dt className={status === 'wajib' ? 'text-on-primary/90' : 'text-ink-muted'}>
+                <dt className={shownStatus === 'wajib' ? 'text-on-primary/90' : 'text-ink-muted'}>
                   {detail.label}
                 </dt>
                 <dd className="tabular text-right font-semibold">
@@ -146,14 +160,24 @@ export function ResultPanel({
   );
 }
 
-export function MobileResultBar({ title, amount }: { title: string; amount: number }) {
+export function MobileResultBar({
+  title,
+  amount,
+  pending = false,
+}: {
+  title: string;
+  amount: number;
+  pending?: boolean;
+}) {
   return (
     <div className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-surface/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-md lg:hidden">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
         <div className="min-w-0">
           <p className="truncate text-xs font-medium text-ink-muted">{title}</p>
           <p className="text-xl font-extrabold">
-            <AnimatedAmount value={amount} className="tabular" />
+            <PendingValue pending={pending}>
+              <AnimatedAmount value={amount} className="tabular" />
+            </PendingValue>
           </p>
         </div>
         <a
