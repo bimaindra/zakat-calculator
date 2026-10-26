@@ -2,6 +2,7 @@ import { Link, createFileRoute } from '@tanstack/react-router';
 import { ArticleContent } from '@/components/article/article-content';
 import { GoldPriceBadge } from '@/components/calculator/gold-price-badge';
 import { PatternBackdrop } from '@/components/pattern-backdrop';
+import { ZakatIconTile } from '@/components/zakat-icon';
 import { useGoldPrice } from '@/context/gold-price-context';
 import { BUILD_YEAR, HOME_ARTICLE } from '@/content/articles';
 import { CALCULATORS, type CalculatorId } from '@/content/calculators';
@@ -59,9 +60,13 @@ function Home() {
                 to={calculator.path}
                 className="group relative flex h-full flex-col justify-between gap-8 overflow-hidden rounded-3xl border border-line bg-surface p-6 transition-[border-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 sm:p-8"
               >
-                <div className="space-y-2">
+                <div className="space-y-4">
+                  <ZakatIconTile
+                    type={calculator.id}
+                    className="size-12 rounded-2xl transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105"
+                  />
                   <h3 className="text-xl font-bold">
-                    Kalkulator {calculator.navLabel}
+                    {calculator.navLabel}
                     <span
                       className="ml-2 inline-block text-primary transition-transform group-hover:translate-x-1"
                       aria-hidden="true"
@@ -69,7 +74,7 @@ function Home() {
                       →
                     </span>
                   </h3>
-                  <p className="text-ink-muted">{calculator.summary}</p>
+                  <p className="-mt-2 text-ink-muted">{calculator.summary}</p>
                 </div>
                 <div className="flex items-baseline justify-between gap-4 border-t border-line pt-4 text-sm">
                   <span className="text-ink-muted">{keyFigure[calculator.id].label}</span>

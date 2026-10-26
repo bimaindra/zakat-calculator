@@ -6,6 +6,7 @@ import { ResultActions } from './result-actions';
 import { GoldPriceBadge } from './gold-price-badge';
 import { MobileResultBar, ResultPanel, type ResultPanelProps } from './result-panel';
 import { PatternBackdrop } from '@/components/pattern-backdrop';
+import { ZakatIconTile } from '@/components/zakat-icon';
 
 interface CalculatorPageProps {
   calculator: CalculatorInfo;
@@ -37,6 +38,11 @@ export function CalculatorPage({
         <div className="relative mx-auto max-w-6xl space-y-6 px-4 pt-10 pb-8 sm:px-6 sm:pt-14">
           <CalculatorTabs />
           <div className="max-w-2xl space-y-3">
+            <ZakatIconTile
+              type={calculator.id}
+              className="size-14 rounded-2xl"
+              iconClassName="size-8"
+            />
             <h1 className="text-3xl font-extrabold tracking-tight text-balance sm:text-5xl">
               {heading}
             </h1>

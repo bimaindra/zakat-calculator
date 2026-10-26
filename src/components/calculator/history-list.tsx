@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { useHistory } from '@/hooks/use-history';
+import { ZakatIconTile } from '@/components/zakat-icon';
 import { getCalculator } from '@/content/calculators';
 import { formatRupiah } from '@/lib/format';
 
@@ -31,11 +32,18 @@ export function HistoryList() {
           const calculator = getCalculator(entry.type);
           return (
             <li key={entry.id} className="flex items-center justify-between gap-4 py-3 text-sm">
-              <div>
-                <Link to={calculator.path} className="font-semibold hover:text-primary">
-                  {calculator.navLabel}
-                </Link>
-                <p className="text-ink-muted">{dateTime.format(new Date(entry.createdAt))}</p>
+              <div className="flex items-center gap-3">
+                <ZakatIconTile
+                  type={entry.type}
+                  className="size-9 rounded-xl"
+                  iconClassName="size-5"
+                />
+                <div>
+                  <Link to={calculator.path} className="font-semibold hover:text-primary">
+                    {calculator.navLabel}
+                  </Link>
+                  <p className="text-ink-muted">{dateTime.format(new Date(entry.createdAt))}</p>
+                </div>
               </div>
               <span className="tabular font-bold">{formatRupiah(entry.amount)}</span>
             </li>
