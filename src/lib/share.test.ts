@@ -2,33 +2,29 @@ import { describe, expect, it } from 'vitest';
 import { buildShareText, whatsappShareUrl } from './share';
 
 describe('share', () => {
-  it('includes only the zakat type, amount, a nudge and a link', () => {
+  it('includes only the zakat type, amount and a link', () => {
     expect(
       buildShareText({
         type: 'profesi',
-        label: 'zakat profesi bulan ini',
+        label: 'Zakat profesiku bulan ini',
         amount: 625_000,
         path: '/zakat-profesi',
       })
     ).toBe(
-      [
-        'Barusan ngitung zakat profesi bulan ini, hasilnya Rp 625.000 🤲',
-        '',
-        'Ternyata cepat, nisabnya langsung ikut harga emas hari ini. Kamu udah hitung punyamu? 👇',
-        'https://zakat.bimaindra.com/zakat-profesi',
-      ].join('\n')
+      'Zakat profesiku bulan ini Rp 625.000. Aku ngitungnya pakai ini, gampang kok:\nhttps://zakat.bimaindra.com/zakat-profesi'
     );
   });
 
-  it('uses a nudge that fits the zakat type', () => {
+  it('uses a closing line per zakat type', () => {
     const text = buildShareText({
       type: 'fitrah',
-      label: 'zakat fitrah sekeluarga',
+      label: 'Zakat fitrah keluargaku',
       amount: 188_000,
       path: '/zakat-fitrah',
     });
-    expect(text).toContain('Lebaran');
-    expect(text).not.toContain('nisab');
+    expect(text).toBe(
+      'Zakat fitrah keluargaku Rp 188.000. Yang belum ngitung, bisa pakai ini:\nhttps://zakat.bimaindra.com/zakat-fitrah'
+    );
   });
 
   it('url-encodes WhatsApp text', () => {

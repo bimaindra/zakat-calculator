@@ -16,7 +16,7 @@ export function FitrahCalculator({ children }: { children?: ReactNode }) {
   return (
     <CalculatorPage
       calculator={getCalculator('fitrah')}
-      shareLabel="zakat fitrah sekeluarga"
+      shareLabel="Zakat fitrah keluargaku"
       heading="Kalkulator Zakat Fitrah"
       lead="Hitung zakat fitrah untuk seluruh anggota keluarga: 2,5 kg beras atau uang senilai itu untuk setiap jiwa, dibayar sebelum salat Idulfitri."
       usesGoldPrice={false}

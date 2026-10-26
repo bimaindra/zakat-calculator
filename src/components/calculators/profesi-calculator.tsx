@@ -26,7 +26,7 @@ export function ProfesiCalculator({ children }: { children?: ReactNode }) {
   return (
     <CalculatorPage
       calculator={getCalculator('profesi')}
-      shareLabel={`zakat profesi ${unit} ini`}
+      shareLabel={`Zakat profesiku ${unit} ini`}
       heading="Kalkulator Zakat Profesi"
       lead="Hitung zakat penghasilan Anda per bulan atau per tahun: 2,5% dari gaji dan pendapatan lain bila mencapai nisab 85 gram emas per tahun."
       fields={

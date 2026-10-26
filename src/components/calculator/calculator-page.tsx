@@ -16,7 +16,7 @@ interface CalculatorPageProps {
   usesGoldPrice?: boolean;
   fields: ReactNode;
   result: Omit<ResultPanelProps, 'actions'>;
-  /** Disisipkan ke teks berbagi: "Barusan ngitung {shareLabel}, hasilnya …". */
+  /** Awal teks berbagi, mis. "Zakat profesiku bulan ini" (lanjut nominal). */
   shareLabel: string;
   children?: ReactNode;
 }

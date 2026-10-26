@@ -2,12 +2,12 @@ import { absoluteUrl } from '@/config/site';
 import type { CalculatorId } from '@/content/calculators';
 import { formatRupiah } from './format';
 
-/** Ajakan penutup per jenis zakat, ditulis seperti pesan WhatsApp biasa. */
-const NUDGE: Record<CalculatorId, string> = {
-  profesi: 'Ternyata cepat, nisabnya langsung ikut harga emas hari ini. Kamu udah hitung punyamu?',
-  maal: 'Tabungan sama emas yang udah disimpan setahun ternyata ada zakatnya lho. Coba cek punyamu, siapa tahu udah sampai nisab.',
-  fitrah: 'Biar nggak mepet pas Lebaran, yuk hitung punya keluargamu juga.',
-  perdagangan: 'Buat yang punya usaha, coba cek zakat dagangmu juga. Cuma semenit kok.',
+/** Kalimat penutup sebelum tautan, sesantai pesan WhatsApp ke teman. */
+const CLOSING: Record<CalculatorId, string> = {
+  profesi: 'Aku ngitungnya pakai ini, gampang kok:',
+  maal: 'Kalau mau cek punyamu juga, aku pakai ini:',
+  fitrah: 'Yang belum ngitung, bisa pakai ini:',
+  perdagangan: 'Aku ngitungnya pakai ini, kalau mau coba:',
 };
 
 /** Teks berbagi sengaja hanya memuat jenis dan nominal zakat, tanpa rincian harta. */
@@ -18,17 +18,12 @@ export function buildShareText({
   path,
 }: {
   type: CalculatorId;
-  /** Mis. "zakat profesi bulan ini". */
+  /** Awal kalimat, mis. "Zakat profesiku bulan ini". */
   label: string;
   amount: number;
   path: string;
 }) {
-  return [
-    `Barusan ngitung ${label}, hasilnya ${formatRupiah(amount)} 🤲`,
-    '',
-    `${NUDGE[type]} 👇`,
-    absoluteUrl(path),
-  ].join('\n');
+  return `${label} ${formatRupiah(amount)}. ${CLOSING[type]}\n${absoluteUrl(path)}`;
 }
 
 export const whatsappShareUrl = (text: string) => `https://wa.me/?text=${encodeURIComponent(text)}`;

@@ -20,7 +20,7 @@ export function PerdaganganCalculator({ children }: { children?: ReactNode }) {
   return (
     <CalculatorPage
       calculator={getCalculator('perdagangan')}
-      shareLabel="zakat usaha tahun ini"
+      shareLabel="Zakat usahaku tahun ini"
       heading="Kalkulator Zakat Perdagangan"
       lead="Hitung zakat usaha Anda setiap tutup buku tahunan: 2,5% dari aset lancar usaha dikurangi utang jangka pendek, bila mencapai nisab 85 gram emas."
       fields={
