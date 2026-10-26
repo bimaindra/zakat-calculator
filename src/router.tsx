@@ -6,5 +6,7 @@ export function getRouter() {
     routeTree,
     scrollRestoration: true,
     defaultPreload: 'intent',
+    // Crossfade antarhalaman lewat View Transitions API (animasinya di app.css).
+    defaultViewTransition: true,
   });
 }

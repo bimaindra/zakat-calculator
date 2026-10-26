@@ -26,6 +26,10 @@ Docs: [Static prerendering](https://tanstack.com/start/latest/docs/framework/rea
 
 `defaultPreload: 'intent'` preloads a route's code when the user hovers or focuses a link, which is why switching calculator tabs feels instant.
 
+`defaultViewTransition: true` wraps every client-side navigation in `document.startViewTransition()`. The browser snapshots the old page, React renders the new one, and the two snapshots animate via `::view-transition-old(root)` / `::view-transition-new(root)` in `src/styles/app.css`. Elements with their own `view-transition-name` (the header and the calculator tabs) are captured separately, so they stay put while the content fades. Browsers without the API just navigate instantly. A single `<Link viewTransition>` can opt in per link instead.
+
+Docs: [View transitions](https://tanstack.com/router/latest/docs/framework/react/api/router/RouterOptionsType#defaultviewtransition-property)
+
 ## 3. File-based routes: `src/routes/`
 
 | File                                            | URL                 |

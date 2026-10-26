@@ -3,7 +3,11 @@ import { CALCULATORS } from '@/content/calculators';
 
 export function CalculatorTabs() {
   return (
-    <nav aria-label="Jenis zakat" className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+    <nav
+      aria-label="Jenis zakat"
+      data-vt="calculator-tabs"
+      className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0"
+    >
       <ul className="inline-flex min-w-full gap-1 rounded-2xl border border-line bg-surface p-1 sm:min-w-0">
         {CALCULATORS.map((calculator) => (
           <li key={calculator.id} className="flex-1 sm:flex-none">
