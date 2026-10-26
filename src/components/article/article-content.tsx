@@ -1,5 +1,6 @@
 import type { ArticleSection, Source, WorkedExample } from '@/content/articles';
 import type { FaqItem } from '@/lib/seo';
+import { PendingValue } from '@/components/pending-value';
 
 function Section({ section }: { section: ArticleSection }) {
   return (
@@ -79,11 +80,20 @@ interface ArticleContentProps {
   sections: ArticleSection[];
   formula?: string;
   example?: WorkedExample;
+  /** Contoh masih memakai harga emas bawaan: samarkan angka yang bergantung padanya. */
+  examplePending?: boolean;
   faq: FaqItem[];
   sources: Source[];
 }
 
-export function ArticleContent({ sections, formula, example, faq, sources }: ArticleContentProps) {
+export function ArticleContent({
+  sections,
+  formula,
+  example,
+  examplePending = false,
+  faq,
+  sources,
+}: ArticleContentProps) {
   return (
     <article className="mx-auto mt-20 max-w-3xl space-y-12 px-4 sm:px-6">
       {sections.map((section) => (
@@ -107,11 +117,13 @@ export function ArticleContent({ sections, formula, example, faq, sources }: Art
             <ol className="list-decimal space-y-2 pl-5 text-ink-muted marker:font-semibold marker:text-primary">
               {example.steps.map((step) => (
                 <li key={step} className="tabular pl-1">
-                  {step}
+                  <PendingValue pending={examplePending}>{step}</PendingValue>
                 </li>
               ))}
             </ol>
-            <p className="rounded-xl bg-gold-soft px-4 py-3 font-semibold">{example.conclusion}</p>
+            <p className="rounded-xl bg-gold-soft px-4 py-3 font-semibold">
+              <PendingValue pending={examplePending}>{example.conclusion}</PendingValue>
+            </p>
           </div>
         </section>
       )}
