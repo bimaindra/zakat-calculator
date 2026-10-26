@@ -50,4 +50,4 @@ Thumbs.db
 # Generated
 src/routeTree.gen.ts
 .tanstack/
-.netlify/
+.wrangler/

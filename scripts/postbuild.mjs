@@ -1,4 +1,4 @@
-// Runs after `vite build`: writes sitemap.xml, robots.txt and Netlify _headers
+// Runs after `vite build`: writes sitemap.xml, robots.txt and Cloudflare _headers
 // (strict CSP with hashes of the inline scripts TanStack Start emits).
 import { createHash } from 'node:crypto';
 import { readFile, readdir, writeFile } from 'node:fs/promises';
@@ -40,7 +40,7 @@ function inlineScriptHashes(html) {
 }
 
 /**
- * Netlify serves 404.html for any unknown URL. Hydrating it there would mismatch the
+ * Cloudflare serves 404.html for any unknown URL (not_found_handling: "404-page"). Hydrating it there would mismatch the
  * prerendered /404 route, so ship it as plain static HTML without the app bundle.
  */
 async function makeNotFoundStatic() {
@@ -106,6 +106,13 @@ const headers = `/*
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 `;
+
+// Cloudflare ignores _headers lines longer than 2,000 characters; fail loudly instead.
+const MAX_HEADER_LINE = 2000;
+const tooLong = headers.split('\n').find((line) => line.length > MAX_HEADER_LINE);
+if (tooLong) {
+  throw new Error(`_headers line exceeds ${MAX_HEADER_LINE} chars: ${tooLong.slice(0, 80)}…`);
+}
 
 await writeFile(path.join(OUT_DIR, 'sitemap.xml'), sitemap);
 await writeFile(path.join(OUT_DIR, 'robots.txt'), robots);

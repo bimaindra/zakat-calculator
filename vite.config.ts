@@ -17,7 +17,7 @@ export default defineConfig({
       prerender: {
         enabled: true,
         crawlLinks: true,
-        // /zakat-maal -> zakat-maal.html so Netlify serves it without a trailing-slash redirect.
+        // /zakat-maal -> zakat-maal.html so Cloudflare serves it without a trailing-slash redirect.
         autoSubfolderIndex: false,
       },
     }),

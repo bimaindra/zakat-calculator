@@ -37,7 +37,8 @@ src/
   content/           calculator registry, SEO copy, FAQ and references
   context/           gold price provider
   lib/               framework-free logic: zakat.ts, gold-price.ts, history.ts, seo.ts, format.ts
-scripts/postbuild.mjs  sitemap.xml, robots.txt and Netlify _headers (CSP with inline script hashes)
+scripts/postbuild.mjs  sitemap.xml, robots.txt and Cloudflare _headers (CSP with inline script hashes)
+wrangler.jsonc       Cloudflare Workers static assets config
 public/og/           1200×630 social images
 docs/                learning notes
 ```
@@ -48,16 +49,32 @@ docs/                learning notes
 - **Gold price** comes from [fawazahmed0/exchange-api](https://github.com/fawazahmed0/exchange-api) (XAU→IDR). If that fails it tries the jsDelivr mirror, then a 12-hour `localStorage` cache, then a built-in default. Users can set a manual price, e.g. Antam's.
 - **Privacy**: no backend, no analytics. History stores only type, amount and timestamp in `localStorage`. Shared text includes only the zakat amount.
 
-## Deployment (Netlify)
+## Deployment (Cloudflare Workers)
 
-`netlify.toml` builds with `pnpm build` and publishes `dist/client`. Security headers are generated into `dist/client/_headers` on every build, because the CSP hashes change whenever the inline scripts change.
+The site is deployed as [Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/) with no Worker script. `wrangler.jsonc` serves `dist/client`:
 
-Set `VITE_SITE_URL` to change the canonical domain used for canonical URLs, OG tags and the sitemap. It defaults to `https://zakat.bimaindra.com`.
+- `zakat-maal.html` is served at `/zakat-maal`. `/zakat-maal.html` and `/zakat-maal/` redirect there (`html_handling: "auto-trailing-slash"`).
+- Unknown URLs get `404.html` with a 404 status (`not_found_handling: "404-page"`).
+- `_headers` (generated on every build, because the CSP hashes change whenever the inline scripts change) adds the security headers and caches `/assets/*` as immutable.
+
+| Script         | What it does                                                           |
+| -------------- | ---------------------------------------------------------------------- |
+| `pnpm preview` | Serve `dist/client` locally with Cloudflare's runtime (`wrangler dev`) |
+| `pnpm deploy`  | Build and deploy with `wrangler deploy` (needs `wrangler login`)       |
+
+Or connect the GitHub repo in **Workers & Pages → Create → Import a repository** (Workers Builds) with:
+
+- Build command: `pnpm build`
+- Deploy command: `npx wrangler deploy`
+- Node version comes from `.node-version` (24).
+
+Set `VITE_SITE_URL` (build variable) to change the domain used for canonical URLs, OG tags and the sitemap. It defaults to `https://zakat.bimaindra.com`.
 
 After the first deploy:
 
-1. Point the `zakat` CNAME at the Netlify site and enable HTTPS.
-2. Add the property in Google Search Console and submit `https://zakat.bimaindra.com/sitemap.xml`.
+1. Add `zakat.bimaindra.com` under the Worker's **Settings → Domains & Routes → Custom domain**. If `bimaindra.com` already uses Cloudflare DNS, the record and certificate are created automatically.
+2. Keep **Rocket Loader**, **Email Address Obfuscation** and automatic **Web Analytics** injection **off** for this hostname. They inject inline scripts that the CSP will (correctly) block.
+3. Add the property in Google Search Console and submit `https://zakat.bimaindra.com/sitemap.xml`.
 
 ## Maintenance
 

@@ -14,7 +14,7 @@ tanstackStart({ prerender: { enabled: true, crawlLinks: true, autoSubfolderIndex
 
 - `enabled` renders every discovered route to static HTML at build time.
 - `crawlLinks` follows `<a href>` in rendered pages to find more routes.
-- `autoSubfolderIndex: false` writes `zakat-maal.html` instead of `zakat-maal/index.html`, so Netlify serves `/zakat-maal` without redirecting to `/zakat-maal/`.
+- `autoSubfolderIndex: false` writes `zakat-maal.html` instead of `zakat-maal/index.html`, so Cloudflare serves `/zakat-maal` without redirecting to `/zakat-maal/`.
 
 The build outputs `dist/client` (static site, what we deploy) and `dist/server` (used only during prerendering).
 
@@ -76,10 +76,10 @@ In the browser, React **hydrates** that HTML, then effects run: `GoldPriceProvid
 ## 7. Things we deliberately did not use
 
 - **Loaders and server functions** (`createServerFn`): there is no server at runtime, so all data is either static or fetched in the browser.
-- **SSR on Netlify Functions**: unnecessary for five static pages. `@netlify/vite-plugin-tanstack-start` would be the path if that ever changes.
+- **SSR on Cloudflare Workers**: unnecessary for five static pages. If that ever changes, see the [Start hosting guide](https://tanstack.com/start/latest/docs/framework/react/guide/hosting) for running it on Cloudflare Workers. For now `wrangler.jsonc` only serves static assets.
 
 ## 8. Gotchas we hit
 
 - `verbatimModuleSyntax` must stay off (per the Start docs) or server-only code can leak into client bundles.
 - Start emits inline scripts (hydration data, scroll restoration). A strict CSP therefore needs their hashes; `scripts/postbuild.mjs` computes them after every build.
-- Netlify serves `404.html` for any unknown path, but its prerendered router state says `/404`. Hydrating it under a different URL broke rendering, so postbuild strips the app bundle from `404.html` and it ships as plain HTML.
+- Cloudflare serves `404.html` for any unknown path (`not_found_handling: "404-page"`), but its prerendered router state says `/404`. Hydrating it under a different URL broke rendering, so postbuild strips the app bundle from `404.html` and it ships as plain HTML.

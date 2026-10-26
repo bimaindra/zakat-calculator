@@ -1,0 +1,15 @@
+// Static site on Cloudflare Workers Static Assets (no Worker script).
+// TanStack Start prerenders every route into dist/client; scripts/postbuild.mjs
+// adds sitemap.xml, robots.txt and _headers (CSP with inline script hashes).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "zakat-calculator",
+  "compatibility_date": "2026-10-26",
+  "assets": {
+    "directory": "./dist/client",
+    // zakat-maal.html is served at /zakat-maal; /zakat-maal.html and /zakat-maal/ redirect there.
+    "html_handling": "auto-trailing-slash",
+    // Unknown URLs get dist/client/404.html with a 404 status.
+    "not_found_handling": "404-page",
+  },
+}

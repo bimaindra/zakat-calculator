@@ -11,7 +11,7 @@ export default tseslint.config(
       'node_modules/**',
       '.vscode/**',
       '.tanstack/**',
-      '.netlify/**',
+      '.wrangler/**',
       'coverage/**',
       'src/routeTree.gen.ts',
       '*.config.js',

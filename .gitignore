@@ -23,7 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# TanStack Start / Netlify
+# TanStack Start / Cloudflare
 .tanstack
-.netlify
+.wrangler
 .output
