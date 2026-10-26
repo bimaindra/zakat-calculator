@@ -49,7 +49,8 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      {/* Ekstensi browser (mis. ColorZilla) menambah atribut ke <body> sebelum hidrasi. */}
+      <body suppressHydrationWarning>
         {children}
         <Scripts />
       </body>
