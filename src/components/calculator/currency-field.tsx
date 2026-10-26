@@ -9,6 +9,8 @@ interface CurrencyFieldProps {
   onChange: (value: number) => void;
   hint?: string;
   placeholder?: string;
+  /** Tampilkan penanda "Opsional" di samping label. */
+  optional?: boolean;
 }
 
 export function CurrencyField({
@@ -17,6 +19,7 @@ export function CurrencyField({
   onChange,
   hint,
   placeholder = '0',
+  optional = false,
 }: CurrencyFieldProps) {
   const id = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -45,8 +48,13 @@ export function CurrencyField({
 
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="block text-sm font-semibold">
+      <label htmlFor={id} className="flex items-center gap-2 text-sm font-semibold">
         {label}
+        {optional && (
+          <span className="rounded-full bg-surface-muted px-2 py-0.5 text-xs font-medium text-ink-muted">
+            Opsional
+          </span>
+        )}
       </label>
       <div className="group relative">
         <span

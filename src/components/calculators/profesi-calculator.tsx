@@ -60,9 +60,10 @@ export function ProfesiCalculator({ children }: { children?: ReactNode }) {
             }
             hint={
               yearly
-                ? 'Opsional. Jumlah semua pendapatan tambahan selama setahun.'
-                : 'Opsional. Isi bila ada pendapatan tambahan di bulan ini.'
+                ? 'Jumlah semua pendapatan tambahan selama setahun.'
+                : 'Isi bila ada pendapatan tambahan di bulan ini.'
             }
+            optional
             value={bonus}
             onChange={setBonus}
           />

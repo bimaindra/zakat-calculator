@@ -33,19 +33,22 @@ export function MaalCalculator({ children }: { children?: ReactNode }) {
           />
           <CurrencyField
             label="Emas dan perak"
+            optional
             hint="Nilai rupiah emas/perak yang disimpan, bukan perhiasan yang dipakai wajar sehari-hari."
             value={gold}
             onChange={setGold}
           />
           <CurrencyField
             label="Investasi"
+            optional
             hint="Saham, reksa dana, sukuk, obligasi, kripto. Rumah dan kendaraan yang Anda pakai sendiri tidak dihitung."
             value={investments}
             onChange={setInvestments}
           />
           <CurrencyField
             label="Utang jatuh tempo"
-            hint="Opsional. Utang atau cicilan yang harus dibayar saat ini (bukan seluruh sisa pinjaman jangka panjang)."
+            optional
+            hint="Utang atau cicilan yang harus dibayar saat ini (bukan seluruh sisa pinjaman jangka panjang)."
             value={debts}
             onChange={setDebts}
           />

@@ -34,12 +34,14 @@ export function PerdaganganCalculator({ children }: { children?: ReactNode }) {
           <CurrencyField label="Kas dan saldo rekening usaha" value={cash} onChange={setCash} />
           <CurrencyField
             label="Piutang lancar"
+            optional
             hint="Piutang dagang yang diperkirakan akan tertagih."
             value={receivables}
             onChange={setReceivables}
           />
           <CurrencyField
             label="Utang jangka pendek"
+            optional
             hint="Utang usaha yang jatuh tempo dalam waktu dekat. Aset tetap seperti toko dan kendaraan usaha tidak dihitung."
             value={debts}
             onChange={setDebts}
