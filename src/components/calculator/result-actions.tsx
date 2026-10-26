@@ -13,7 +13,7 @@ interface ResultActionsProps {
 export function ResultActions({ type, amount, shareLabel, path }: ResultActionsProps) {
   const { add } = useHistory();
   const [feedback, setFeedback] = useState('');
-  const text = buildShareText({ label: shareLabel, amount, path });
+  const text = buildShareText({ type, label: shareLabel, amount, path });
 
   const flash = (message: string) => {
     setFeedback(message);
