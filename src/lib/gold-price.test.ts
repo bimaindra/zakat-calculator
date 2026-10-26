@@ -44,6 +44,18 @@ describe('parseGoldResponse', () => {
   it('rejects zero or negative prices', () => {
     expect(parseGoldResponse({ date: '2026-10-25', xau: { idr: 0 } })).toBeNull();
   });
+
+  it.each([
+    ['absurdly low (wrong unit)', 1],
+    ['far below the default', OUNCE_PRICE / 10],
+    ['far above the default', OUNCE_PRICE * 10],
+  ])('rejects an implausible price: %s', (_label, idr) => {
+    expect(parseGoldResponse({ date: '2026-10-25', xau: { idr } })).toBeNull();
+  });
+
+  it('accepts a price that moved a lot but plausibly', () => {
+    expect(parseGoldResponse({ date: '2026-10-25', xau: { idr: OUNCE_PRICE * 2 } })).not.toBeNull();
+  });
 });
 
 describe('resolveGoldPrice', () => {
@@ -77,6 +89,16 @@ describe('resolveGoldPrice', () => {
     const price = await resolveGoldPrice({ storage: memoryStorage(), fetchImpl, now: NOW });
     expect(price.source).toBe('live');
     expect(fetchImpl).toHaveBeenNthCalledWith(2, GOLD_PRICE_SOURCES[1], expect.anything());
+  });
+
+  it('falls back to the mirror when the primary returns an implausible price', async () => {
+    const storage = memoryStorage();
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(okResponse({ date: '2026-10-25', xau: { idr: 1 } }))
+      .mockResolvedValueOnce(okResponse(apiBody));
+    const price = await resolveGoldPrice({ storage, fetchImpl, now: NOW });
+    expect(price).toEqual({ pricePerGram: GRAM_PRICE, date: '2026-10-25', source: 'live' });
   });
 
   it('skips non-OK and malformed responses', async () => {

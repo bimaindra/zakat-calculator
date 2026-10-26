@@ -16,6 +16,15 @@ export const DEFAULT_GOLD_PRICE: GoldPrice = {
   source: 'default',
 };
 
+/**
+ * Batas wajar terhadap harga bawaan. Nilai di luar rentang ini (mis. API salah satuan) dianggap
+ * sumber gagal, supaya nisab tidak jadi Rp 3 dan nilainya tidak ikut tersimpan 12 jam di cache.
+ */
+export const PLAUSIBLE_PRICE_RANGE = [
+  DEFAULT_GOLD_PRICE.pricePerGram / 4,
+  DEFAULT_GOLD_PRICE.pricePerGram * 4,
+] as const;
+
 export const CACHE_KEY = 'zakat:gold-price';
 export const OVERRIDE_KEY = 'zakat:gold-price-override';
 
@@ -42,7 +51,10 @@ export function parseGoldResponse(json: unknown): Omit<GoldPrice, 'source'> | nu
   const { date, xau } = json as { date?: unknown; xau?: { idr?: unknown } };
   const idrPerOunce = xau?.idr;
   if (typeof date !== 'string' || !isValidPrice(idrPerOunce)) return null;
-  return { pricePerGram: Math.round(idrPerOunce / GRAMS_PER_TROY_OUNCE), date };
+  const pricePerGram = Math.round(idrPerOunce / GRAMS_PER_TROY_OUNCE);
+  const [min, max] = PLAUSIBLE_PRICE_RANGE;
+  if (pricePerGram < min || pricePerGram > max) return null;
+  return { pricePerGram, date };
 }
 
 export async function fetchGoldPrice(fetchImpl: typeof fetch = fetch) {
