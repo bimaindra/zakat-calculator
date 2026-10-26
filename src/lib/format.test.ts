@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { cn, formatDate, formatDecimal, formatRupiah, parseDigits } from './format';
+import {
+  cn,
+  formatDate,
+  formatDecimal,
+  formatRupiah,
+  parseDigits,
+  parsePastedAmount,
+} from './format';
 
 describe('formatRupiah', () => {
   it('formats with Indonesian grouping and no decimals', () => {
@@ -33,6 +40,20 @@ describe('parseDigits', () => {
     ['-250', 250],
   ])('parses %j as %d', (input, expected) => {
     expect(parseDigits(input)).toBe(expected);
+  });
+});
+
+describe('parsePastedAmount', () => {
+  it.each([
+    ['Rp1.500.000,00', 1_500_000],
+    ['1,500,000.00', 1_500_000],
+    ['Rp 25.000.000,50', 25_000_000],
+    ['IDR 2.500.000,5', 2_500_000],
+    ['Rp 1.500.000', 1_500_000],
+    ['1,500,000', 1_500_000],
+    ['  750000  ', 750_000],
+  ])('parses %j as %d', (input, expected) => {
+    expect(parsePastedAmount(input)).toBe(expected);
   });
 });
 

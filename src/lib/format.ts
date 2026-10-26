@@ -41,6 +41,16 @@ export function parseDigits(input: string) {
   return digits ? Number(digits) : 0;
 }
 
+/**
+ * Untuk teks yang ditempel (mis. saldo dari aplikasi bank): buang sen di belakang dulu
+ * ('Rp1.500.000,00' atau '1,500,000.00' → 1500000). Kelompok ribuan selalu 3 digit,
+ * jadi 1–2 digit setelah titik/koma terakhir pasti desimal.
+ * Jangan dipakai saat mengetik: menghapus satu digit dari '1.500' menghasilkan '1.50'.
+ */
+export function parsePastedAmount(input: string) {
+  return parseDigits(input.trim().replace(/[.,]\d{1,2}$/, ''));
+}
+
 export function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(' ');
 }

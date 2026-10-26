@@ -1,5 +1,5 @@
-import { useId, useLayoutEffect, useRef, type ChangeEvent } from 'react';
-import { formatNumber, parseDigits } from '@/lib/format';
+import { useId, useLayoutEffect, useRef, type ChangeEvent, type ClipboardEvent } from 'react';
+import { formatNumber, parseDigits, parsePastedAmount } from '@/lib/format';
 
 const MAX_VALUE = 999_999_999_999_999;
 
@@ -46,6 +46,13 @@ export function CurrencyField({
     onChange(Math.min(parseDigits(raw), MAX_VALUE));
   };
 
+  // Teks tempelan bisa berisi sen ("1.500.000,00"); ganti seluruh isi dengan nominalnya.
+  const handlePaste = (event: ClipboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    caretDigits.current = Number.MAX_SAFE_INTEGER;
+    onChange(Math.min(parsePastedAmount(event.clipboardData.getData('text')), MAX_VALUE));
+  };
+
   return (
     <div className="space-y-2">
       <label htmlFor={id} className="flex items-center gap-2 text-sm font-semibold">
@@ -72,6 +79,7 @@ export function CurrencyField({
           enterKeyHint="next"
           value={value ? formatNumber(value) : ''}
           onChange={handleChange}
+          onPaste={handlePaste}
           placeholder={placeholder}
           aria-describedby={hint ? `${id}-hint` : undefined}
           className="tabular h-13 w-full rounded-xl border border-line bg-surface pr-4 pl-12 text-lg font-semibold transition-[border-color,box-shadow] outline-none placeholder:text-ink-muted/50 hover:border-ink-muted/40 focus:border-primary focus:ring-4 focus:ring-primary/15"
