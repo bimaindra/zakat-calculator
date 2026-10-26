@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import { addHistoryEntry, clearHistory, readHistory, type HistoryEntry } from '@/lib/history';
+import { getBrowserStorage } from '@/lib/storage';
 
 const listeners = new Set<() => void>();
 const EMPTY: HistoryEntry[] = [];
@@ -20,7 +21,7 @@ function subscribe(listener: () => void) {
   };
 }
 
-const getSnapshot = () => (snapshot ??= readHistory(localStorage));
+const getSnapshot = () => (snapshot ??= readHistory(getBrowserStorage()));
 
 export function useHistory() {
   const entries = useSyncExternalStore(subscribe, getSnapshot, () => EMPTY);
@@ -28,11 +29,11 @@ export function useHistory() {
   return {
     entries,
     add: (entry: Omit<HistoryEntry, 'id' | 'createdAt'>) => {
-      addHistoryEntry(localStorage, entry);
+      addHistoryEntry(getBrowserStorage(), entry);
       emit();
     },
     clear: () => {
-      clearHistory(localStorage);
+      clearHistory(getBrowserStorage());
       emit();
     },
   };

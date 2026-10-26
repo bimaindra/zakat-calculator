@@ -6,6 +6,7 @@ import {
   writeOverride,
   type GoldPrice,
 } from '@/lib/gold-price';
+import { getBrowserStorage } from '@/lib/storage';
 
 interface GoldPriceContextValue {
   /** Harga yang dipakai untuk perhitungan (manual bila ada override). */
@@ -31,9 +32,9 @@ export function GoldPriceProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let cancelled = false;
-    setManualPriceState(readOverride(localStorage));
+    setManualPriceState(readOverride(getBrowserStorage()));
     setHasReadOverride(true);
-    resolveGoldPrice({ storage: localStorage }).then((resolved) => {
+    resolveGoldPrice({ storage: getBrowserStorage() }).then((resolved) => {
       if (cancelled) return;
       setMarketPrice(resolved);
       setIsLoading(false);
@@ -44,7 +45,7 @@ export function GoldPriceProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setManualPrice = (pricePerGram: number | null) => {
-    writeOverride(localStorage, pricePerGram);
+    writeOverride(getBrowserStorage(), pricePerGram);
     setManualPriceState(pricePerGram);
   };
 

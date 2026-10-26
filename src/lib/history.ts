@@ -1,4 +1,5 @@
 import type { CalculatorId } from '@/content/calculators';
+import type { KeyValueStorage } from './storage';
 
 export const HISTORY_KEY = 'zakat:history';
 export const HISTORY_LIMIT = 5;
@@ -10,8 +11,6 @@ export interface HistoryEntry {
   amount: number;
   createdAt: string;
 }
-
-type KeyValueStorage = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
 
 const CALCULATOR_IDS: readonly string[] = ['profesi', 'maal', 'fitrah', 'perdagangan'];
 

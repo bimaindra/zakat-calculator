@@ -1,3 +1,5 @@
+import type { KeyValueStorage } from './storage';
+
 export const GRAMS_PER_TROY_OUNCE = 31.1034768;
 export const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 export const FETCH_TIMEOUT_MS = 5000;
@@ -31,8 +33,6 @@ interface CachedGoldPrice {
   date: string;
   fetchedAt: number;
 }
-
-type KeyValueStorage = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
 
 const isValidPrice = (value: unknown): value is number =>
   typeof value === 'number' && Number.isFinite(value) && value > 0;
