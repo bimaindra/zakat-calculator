@@ -132,14 +132,14 @@ export const ARTICLES: Record<CalculatorId, Article> = {
   profesi: {
     seoTitle: `Kalkulator Zakat Profesi ${BUILD_YEAR}: Hitung Zakat Gaji`,
     description:
-      'Hitung zakat profesi atau zakat penghasilan dari gaji bulanan Anda. Nisab mengikuti harga 85 gram emas terkini, kadar 2,5%, hasil langsung muncul.',
+      'Hitung zakat profesi atau zakat penghasilan dari gaji Anda, per bulan atau per tahun. Nisab mengikuti harga 85 gram emas terkini, kadar 2,5%, hasil langsung muncul.',
     breadcrumb: 'Zakat Profesi',
     sections: [
       {
         heading: 'Apa itu zakat profesi?',
         paragraphs: [
           'Zakat profesi (zakat penghasilan) adalah zakat yang dikeluarkan dari pendapatan rutin seperti gaji, honorarium, upah, dan penghasilan jasa profesional. Ketentuan ini merujuk pada Fatwa MUI No. 3 Tahun 2003 tentang Zakat Penghasilan dan diatur dalam regulasi Kementerian Agama.',
-          'Banyak orang menunaikannya setiap bulan saat menerima gaji, sehingga nisabnya dihitung per bulan: 85 gram emas dibagi 12.',
+          'Banyak orang menunaikannya setiap bulan saat menerima gaji, sehingga nisabnya dihitung per bulan: 85 gram emas dibagi 12. Bila lebih nyaman membayar setahun sekali, pilih "Per tahun" di kalkulator: penghasilan setahun dibandingkan langsung dengan nisab 85 gram emas.',
         ],
       },
       {

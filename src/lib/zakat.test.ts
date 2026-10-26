@@ -55,6 +55,31 @@ describe('calculateProfesi', () => {
     expect(result.isWajib).toBe(false);
     expect(result.nisabRatio).toBe(0);
   });
+
+  describe('per tahun', () => {
+    it('annualises the salary, adds the yearly bonus and uses the yearly nisab', () => {
+      const result = calculateProfesi(
+        { monthlyIncome: 15_000_000, bonus: 10_000_000 },
+        GOLD,
+        'tahunan'
+      );
+      expect(result.total).toBe(190_000_000);
+      expect(result.nisab).toBe(YEARLY_NISAB);
+      expect(result.isWajib).toBe(true);
+      expect(result.amount).toBe(4_750_000);
+    });
+
+    it('can be wajib yearly when a bonus month alone is not', () => {
+      const input = { monthlyIncome: 13_000_000, bonus: 15_000_000 };
+      expect(calculateProfesi({ ...input, bonus: 0 }, GOLD).isWajib).toBe(false);
+      expect(calculateProfesi(input, GOLD, 'tahunan').isWajib).toBe(true);
+    });
+
+    it('ignores negative and non-finite inputs', () => {
+      const result = calculateProfesi({ monthlyIncome: -5, bonus: Number.NaN }, GOLD, 'tahunan');
+      expect(result.total).toBe(0);
+    });
+  });
 });
 
 describe('calculateMaal', () => {

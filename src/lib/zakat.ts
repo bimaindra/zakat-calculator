@@ -17,8 +17,11 @@ export interface NisabResult {
   amount: number;
 }
 
+export type ProfesiPeriod = 'bulanan' | 'tahunan';
+
 export interface ProfesiInput {
   monthlyIncome: number;
+  /** Bonus/THR/pendapatan lain dalam periode yang sama (bulan ini atau setahun). */
   bonus: number;
 }
 
@@ -70,8 +73,21 @@ function evaluate(total: number, nisab: number): NisabResult {
   };
 }
 
-/** Zakat profesi per bulan: 2,5% dari penghasilan bila ≥ nisab 85 g emas / 12. */
-export function calculateProfesi(input: ProfesiInput, goldPricePerGram: number) {
+/**
+ * Zakat profesi 2,5%. Bulanan: (gaji + bonus bulan ini) dibanding nisab 85 g emas / 12.
+ * Tahunan: (gaji × 12 + bonus setahun) dibanding nisab 85 g emas.
+ */
+export function calculateProfesi(
+  input: ProfesiInput,
+  goldPricePerGram: number,
+  period: ProfesiPeriod = 'bulanan'
+) {
+  if (period === 'tahunan') {
+    return evaluate(
+      sum(nonNegative(input.monthlyIncome) * MONTHS_PER_YEAR, input.bonus),
+      yearlyNisab(goldPricePerGram)
+    );
+  }
   return evaluate(sum(input.monthlyIncome, input.bonus), monthlyNisab(goldPricePerGram));
 }
 
