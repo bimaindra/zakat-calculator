@@ -1,5 +1,11 @@
 import { useSyncExternalStore } from 'react';
-import { addHistoryEntry, clearHistory, readHistory, type HistoryEntry } from '@/lib/history';
+import {
+  addHistoryEntry,
+  clearHistory,
+  readHistory,
+  HISTORY_KEY,
+  type HistoryEntry,
+} from '@/lib/history';
 import { getBrowserStorage } from '@/lib/storage';
 
 const listeners = new Set<() => void>();
@@ -11,13 +17,24 @@ const emit = () => {
   listeners.forEach((listener) => listener());
 };
 
+function onStorage(event: StorageEvent) {
+  if (
+    event.storageArea === getBrowserStorage() &&
+    (event.key === HISTORY_KEY || event.key === null)
+  ) {
+    emit();
+  }
+}
+
 function subscribe(listener: () => void) {
+  // Other tabs may have changed storage while no history component was mounted.
+  if (listeners.size === 0) snapshot = null;
   listeners.add(listener);
   // Sinkron antar-tab.
-  window.addEventListener('storage', emit);
+  window.addEventListener('storage', onStorage);
   return () => {
     listeners.delete(listener);
-    window.removeEventListener('storage', emit);
+    if (listeners.size === 0) window.removeEventListener('storage', onStorage);
   };
 }
 
