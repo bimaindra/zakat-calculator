@@ -84,8 +84,15 @@ export function GoldPriceBadge() {
               Ubah harga emas
             </h2>
             <p className="text-sm text-ink-muted">
-              Misalnya harga emas Antam hari ini. Harga pasar internasional saat ini{' '}
-              {formatRupiah(marketPrice.pricePerGram)}/g ({formatDate(marketPrice.date)}).
+              Misalnya harga emas Antam hari ini.{' '}
+              {isLoading ? (
+                'Harga acuan otomatis sedang dimuat.'
+              ) : (
+                <>
+                  Harga acuan ({SOURCE_LABEL[marketPrice.source]}){' '}
+                  {formatRupiah(marketPrice.pricePerGram)}/g ({formatDate(marketPrice.date)}).
+                </>
+              )}
             </p>
           </div>
           <CurrencyField label="Harga emas per gram" value={draft} onChange={setDraft} />
@@ -96,7 +103,7 @@ export function GoldPriceBadge() {
                 onClick={reset}
                 className="mr-auto rounded-xl px-4 py-2.5 text-sm font-semibold text-ink-muted hover:text-ink"
               >
-                Pakai harga pasar
+                Pakai harga acuan otomatis
               </button>
             )}
             <button
