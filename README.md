@@ -68,7 +68,7 @@ Or connect the GitHub repo in **Workers & Pages → Create → Import a reposito
 - Deploy command: `npx wrangler deploy`
 - Node version comes from `.node-version` (24).
 
-Set `VITE_SITE_URL` (build variable) to change the domain used for canonical URLs, OG tags and the sitemap. It defaults to `https://zakat.bimaindra.com`.
+Set `VITE_SITE_URL` (build variable) to change the domain used for canonical URLs, OG tags and the sitemap. It defaults to `https://zakat.bimaindra.com`. The sitemap and robots file use the prerendered home page canonical URL, so they stay consistent with Vite environment files and build modes.
 
 After the first deploy:
 

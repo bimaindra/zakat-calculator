@@ -5,7 +5,11 @@ import { readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const OUT_DIR = path.resolve('dist/client');
-const SITE_URL = (process.env.VITE_SITE_URL || 'https://zakat.bimaindra.com').replace(/\/$/, '');
+// Read the prerendered canonical so .env files and custom Vite modes use the same URL.
+const homeHtml = await readFile(path.join(OUT_DIR, 'index.html'), 'utf8');
+const canonical = homeHtml.match(/<link\b[^>]*rel="canonical"[^>]*href="([^"]+)"/i)?.[1];
+if (!canonical) throw new Error('Missing canonical URL in prerendered index.html');
+const SITE_URL = canonical.replace(/\/$/, '');
 const EXCLUDED_FROM_SITEMAP = new Set(['/404']);
 
 const GOLD_PRICE_ORIGINS = ['https://latest.currency-api.pages.dev', 'https://cdn.jsdelivr.net'];
