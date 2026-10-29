@@ -32,6 +32,9 @@ export function GoldPriceProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let cancelled = false;
+    // Read browser storage only after hydration so the initial client render matches prerender.
+    // This one-time synchronization initializes state from an external system.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setManualPriceState(readOverride(getBrowserStorage()));
     setHasReadOverride(true);
     resolveGoldPrice({ storage: getBrowserStorage() }).then((resolved) => {

@@ -74,6 +74,9 @@ export default tseslint.config(
       'react/no-unused-state': 'warn',
       'react/self-closing-comp': 'error',
 
+      // Includes React Compiler diagnostics alongside the Hooks rules.
+      ...reactHooks.configs.flat.recommended.rules,
+
       // React Hooks
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
