@@ -62,11 +62,29 @@ The site is deployed as [Workers Static Assets](https://developers.cloudflare.co
 | `pnpm preview` | Serve `dist/client` locally with Cloudflare's runtime (`wrangler dev`) |
 | `pnpm deploy`  | Build and deploy with `wrangler deploy` (needs `wrangler login`)       |
 
-Or connect the GitHub repo in **Workers & Pages → Create → Import a repository** (Workers Builds) with:
+### Tag-based production deployment
 
-- Build command: `pnpm build`
-- Deploy command: `npx wrangler deploy`
-- Node version comes from `.node-version` (24).
+`.github/workflows/ci.yml` runs checks for pull requests and pushes to `main` or `revamp/2026`. Pushing a stable version tag such as `v2.0.0` runs type checks, lint, formatting, tests, audit and build, then deploys the tagged commit to Cloudflare. Tags must point to a commit reachable from `main`. Prerelease tags are rejected. Production deployments are serialized.
+
+One-time setup in GitHub:
+
+1. Use the existing `Production` environment. Restrict its deployment tags to `v*` and add required reviewers if desired.
+2. Add environment secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Use a Cloudflare API token scoped to the deployment account with the **Edit Cloudflare Workers** template permissions.
+3. Optionally set the repository variable `VITE_SITE_URL` for a different production domain.
+4. If Workers Builds is connected, disable its automatic branch deployments so only this workflow deploys production.
+
+After merging a release into `main`, create and push an immutable tag:
+
+```sh
+git switch main
+git pull --ff-only origin main
+git tag -a v2.0.0 -m "Release v2.0.0"
+git push origin v2.0.0
+```
+
+Use the next unused version for subsequent releases. Do not move published tags. To roll back, rerun the successful deployment workflow for a previous tag in GitHub Actions. This rebuilds that tagged commit and redeploys it, including its static assets and headers. Never rerun an old release unless intentionally rolling back.
+
+The workflow is activated once this file is pushed to GitHub. No release tag is created automatically.
 
 Set `VITE_SITE_URL` (build variable) to change the domain used for canonical URLs, OG tags and the sitemap. It defaults to `https://zakat.bimaindra.com`. The sitemap and robots file use the prerendered home page canonical URL, so they stay consistent with Vite environment files and build modes.
 
